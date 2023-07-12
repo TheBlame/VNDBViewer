@@ -8,5 +8,6 @@ import retrofit2.http.POST
 interface ApiService {
 
     @POST("vn")
-    suspend fun getTopList(@Body body: VnRequest): VnResponse
+    suspend fun postToVnEndpoint(@Body body: VnRequest): VnResponse
+
 }

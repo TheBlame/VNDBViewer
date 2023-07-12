@@ -9,7 +9,8 @@ data class VnList(
     @PrimaryKey
     val id: String,
     @Embedded
-    val image: Image,
-    val rating: Double,
-    val title: String
+    val image: Image? = null,
+    val rating: Double? = null,
+    val title: String? = null,
+    val description: String? = null
 )
