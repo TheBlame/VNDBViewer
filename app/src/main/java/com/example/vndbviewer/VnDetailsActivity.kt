@@ -2,8 +2,8 @@ package com.example.vndbviewer
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import coil.load
@@ -11,7 +11,7 @@ import com.example.vndbviewer.databinding.ActivityVnDetailsBinding
 
 class VnDetailsActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: VnViewModel
+    private lateinit var viewModel: VnItemViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,11 +22,11 @@ class VnDetailsActivity : AppCompatActivity() {
             return
         }
         val id = intent.getStringExtra(ID).toString()
-        viewModel = ViewModelProvider(this)[VnViewModel::class.java]
+        viewModel = ViewModelProvider(this)[VnItemViewModel::class.java]
         viewModel.getVnDetails(id).observe(this, Observer {
             binding.poster.load(it.image?.url) {
                 crossfade(true)
-                crossfade(1000)
+                crossfade(200)
                 placeholder(R.drawable.loading_animation)
                 error(R.drawable.ic_broken_image)
             }
@@ -38,7 +38,6 @@ class VnDetailsActivity : AppCompatActivity() {
 
     companion object {
         private const val ID = "id"
-
         fun newIntent(context: Context, id: String): Intent {
             val intent = Intent(context, VnDetailsActivity::class.java)
             intent.putExtra(ID, id)

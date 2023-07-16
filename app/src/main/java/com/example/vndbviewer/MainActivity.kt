@@ -3,33 +3,29 @@ package com.example.vndbviewer
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.load.engine.executor.GlideExecutor.UncaughtThrowableStrategy.LOG
 import com.example.vndbviewer.adapters.VnListAdapter
 import com.example.vndbviewer.databinding.ActivityMainBinding
-import com.example.vndbviewer.network.pojo.VnList
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var viewModel: VnViewModel
+    private lateinit var viewModel: VnListViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         val adapter = VnListAdapter(this)
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        adapter.onVnClickListener = object : VnListAdapter.OnVnClickListener {
-            override fun onVnClick(vnList: VnList) {
-                val intent = VnDetailsActivity.newIntent(
-                    this@MainActivity,
-                    vnList.id
-                )
-                Log.d("CLICK", "Clicked on ${vnList.id}")
-                startActivity(intent)
-            }
+        adapter.onVnClickListener = {
+            val intent = VnDetailsActivity.newIntent(this@MainActivity, it.id)
+            Log.d("CLICK", "Clicked on ${it.id}")
+            startActivity(intent)
         }
+
         binding.vnList.adapter = adapter
-        viewModel = ViewModelProvider(this)[VnViewModel::class.java]
-        viewModel.vnList.observe(this, Observer { adapter.vnList = it })
+        viewModel = ViewModelProvider(this)[VnListViewModel::class.java]
+        viewModel.vnList.observe(this, Observer { adapter.submitList(it) })
 
     }
 }

@@ -1,53 +1,38 @@
 package com.example.vndbviewer.adapters
 
-import android.app.ActionBar.LayoutParams
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.example.vndbviewer.R
 import com.example.vndbviewer.databinding.ItemVnInfoBinding
-import com.example.vndbviewer.network.pojo.VnList
-import com.squareup.picasso.Picasso
+import com.example.vndbviewer.network.pojo.Vn
 
 
 class VnListAdapter(private val context: Context) :
-    RecyclerView.Adapter<VnListAdapter.VnListViewHolder>() {
+    ListAdapter<Vn, VnListAdapter.VnItemViewHolder>(VnDiffCallback()) {
+    class VnItemViewHolder(val binding: ItemVnInfoBinding) : RecyclerView.ViewHolder(binding.root)
 
-    class VnListViewHolder(val binding: ItemVnInfoBinding) : RecyclerView.ViewHolder(binding.root)
+    var onVnClickListener: ((Vn) -> Unit)? = null
 
-    var vnList: List<VnList> = arrayListOf()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
-
-    var onVnClickListener: OnVnClickListener? = null
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VnListViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VnItemViewHolder {
         val binding = ItemVnInfoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return VnListViewHolder(binding)
+        return VnItemViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = vnList.size
-
-
-    override fun onBindViewHolder(holder: VnListViewHolder, position: Int) {
-        val vn = vnList[position]
+    override fun onBindViewHolder(holder: VnItemViewHolder, position: Int) {
+        val vn = getItem(position)
         holder.binding.tittle.text = vn.title
         holder.binding.rating.text = vn.rating.toString()
         holder.binding.poster.load(vn.image?.url) {
             crossfade(true)
-            crossfade(1000)
+            crossfade(200)
             placeholder(R.drawable.loading_animation)
             error(R.drawable.ic_broken_image)
         }
-        holder.binding.root.setOnClickListener { onVnClickListener?.onVnClick(vn) }
+        holder.binding.root.setOnClickListener { onVnClickListener?.invoke(vn) }
 
 
         //Picasso.get().load(vn.image.url).into(holder.binding.poster)
@@ -63,9 +48,5 @@ class VnListAdapter(private val context: Context) :
         }
 
          */
-    }
-
-    interface OnVnClickListener {
-        fun onVnClick(vnList: VnList)
     }
 }
