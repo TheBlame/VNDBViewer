@@ -1,4 +1,4 @@
-package com.example.vndbviewer
+package com.example.vndbviewer.presentation
 
 import android.os.Bundle
 import android.util.Log
@@ -6,8 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.vndbviewer.adapters.VnListAdapter
 import com.example.vndbviewer.databinding.ActivityMainBinding
+import com.example.vndbviewer.presentation.adapters.VnListAdapter
+import com.example.vndbviewer.presentation.viewmodels.VnListViewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: VnListViewModel

@@ -1,7 +1,7 @@
-package com.example.vndbviewer.adapters
+package com.example.vndbviewer.presentation.adapters
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.vndbviewer.network.pojo.Vn
+import com.example.vndbviewer.domain.Vn
 
 class VnDiffCallback: DiffUtil.ItemCallback<Vn>() {
 

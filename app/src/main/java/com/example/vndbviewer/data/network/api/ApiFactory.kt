@@ -1,4 +1,4 @@
-package com.example.vndbviewer.network.api
+package com.example.vndbviewer.data.network.api
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

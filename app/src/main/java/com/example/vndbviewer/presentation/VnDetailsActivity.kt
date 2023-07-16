@@ -1,4 +1,4 @@
-package com.example.vndbviewer
+package com.example.vndbviewer.presentation
 
 import android.content.Context
 import android.content.Intent
@@ -7,7 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import coil.load
+import com.example.vndbviewer.R
 import com.example.vndbviewer.databinding.ActivityVnDetailsBinding
+import com.example.vndbviewer.presentation.viewmodels.VnItemViewModel
 
 class VnDetailsActivity : AppCompatActivity() {
 
@@ -23,7 +25,8 @@ class VnDetailsActivity : AppCompatActivity() {
         }
         val id = intent.getStringExtra(ID).toString()
         viewModel = ViewModelProvider(this)[VnItemViewModel::class.java]
-        viewModel.getVnDetails(id).observe(this, Observer {
+        viewModel.loadCertainVnInfo(id)
+        viewModel.vnDetails.observe(this, Observer {
             binding.poster.load(it.image?.url) {
                 crossfade(true)
                 crossfade(200)

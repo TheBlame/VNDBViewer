@@ -1,38 +1,37 @@
-package com.example.vndbviewer
+package com.example.vndbviewer.presentation.viewmodels
 
 import android.app.Application
-import android.content.Context
-import android.net.ConnectivityManager
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.vndbviewer.database.AppDatabase
-import com.example.vndbviewer.network.api.ApiFactory
-import com.example.vndbviewer.network.pojo.Vn
-import com.example.vndbviewer.network.pojo.VnRequest
+import com.example.vndbviewer.data.VnListRepositoryImp
+import com.example.vndbviewer.data.network.api.ApiFactory
+import com.example.vndbviewer.data.network.pojo.VnRequest
+import com.example.vndbviewer.domain.AddVnListUseCase
+import com.example.vndbviewer.domain.GetVnListUseCase
+import com.example.vndbviewer.domain.Vn
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class VnListViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val db = AppDatabase.getInstance(application)
-    var vnList = db.vnDao().getVnList()
+    private val repository = VnListRepositoryImp(application)
 
-    private fun isNetworkAvailable(context: Context): Boolean {
-        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val netInfo = cm.activeNetworkInfo
-        Log.d("net info", netInfo.toString())
-        return netInfo != null && netInfo.isConnectedOrConnecting
-    }
+    private val getVnListUseCase = GetVnListUseCase(repository)
+    private val addVnListUseCase = AddVnListUseCase(repository)
+
+    private val _vnList = MutableLiveData<List<Vn>>()
+    val vnList: LiveData<List<Vn>>
+        get() = _vnList
 
     init {
         loadVnList()
-        Log.d("tag1", "VIEWMODEL START")
     }
 
     private fun loadVnList() {
         viewModelScope.launch(Dispatchers.IO) {
-            isNetworkAvailable(getApplication())
             try {
                 val result: List<Vn> =
                     ApiFactory.apiService.postToVnEndpoint(
@@ -45,7 +44,9 @@ class VnListViewModel(application: Application) : AndroidViewModel(application) 
                         )
                     ).vnListResults
                 Log.d("loadVnList", result.toString())
-                db.vnDao().insertVnList(result)
+                addVnListUseCase.addVnList(result)
+                _vnList.postValue(getVnListUseCase.getVnList())
+                Log.d("vnlist", vnList.toString())
             } catch (e: Exception) {
                 e.message?.let { Log.e("loadVnList", it) }
             }

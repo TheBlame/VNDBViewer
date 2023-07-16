@@ -1,4 +1,4 @@
-package com.example.vndbviewer.network.pojo
+package com.example.vndbviewer.data.network.pojo
 
 data class VnRequest(
     val page: Int? = null,

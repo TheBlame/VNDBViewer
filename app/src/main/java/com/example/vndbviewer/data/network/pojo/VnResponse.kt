@@ -1,5 +1,6 @@
-package com.example.vndbviewer.network.pojo
+package com.example.vndbviewer.data.network.pojo
 
+import com.example.vndbviewer.domain.Vn
 import com.google.gson.annotations.SerializedName
 
 data class VnResponse(
