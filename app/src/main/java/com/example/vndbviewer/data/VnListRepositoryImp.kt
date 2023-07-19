@@ -1,6 +1,7 @@
 package com.example.vndbviewer.data
 
 import android.app.Application
+import androidx.lifecycle.LiveData
 import com.example.vndbviewer.data.database.AppDatabase
 import com.example.vndbviewer.domain.Vn
 import com.example.vndbviewer.domain.VnListRepository
@@ -9,7 +10,7 @@ class VnListRepositoryImp(application: Application) : VnListRepository {
 
     private val db = AppDatabase.getInstance(application)
 
-    override suspend fun getVnList(): List<Vn> {
+    override fun getVnList(): LiveData<List<Vn>> {
         return db.vnDao().getVnList()
     }
 

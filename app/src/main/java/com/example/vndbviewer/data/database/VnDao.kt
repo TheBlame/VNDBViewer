@@ -1,5 +1,6 @@
 package com.example.vndbviewer.data.database
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -9,8 +10,9 @@ import com.example.vndbviewer.domain.Vn
 
 @Dao
 interface VnDao {
+
     @Query("SELECT * FROM vn ORDER BY rating DESC, votecount DESC")
-    suspend fun getVnList(): List<Vn>
+    fun getVnList(): LiveData<List<Vn>>
 
     @Query("SELECT * FROM vn WHERE id == :id LIMIT 1")
     suspend fun getVnDetails(id: String): Vn

@@ -1,8 +1,10 @@
 package com.example.vndbviewer.domain
 
+import androidx.lifecycle.LiveData
+
 interface VnListRepository {
 
-    suspend fun getVnList(): List<Vn>
+    fun getVnList(): LiveData<List<Vn>>
 
     suspend fun getVnDetails(id: String): Vn
 

@@ -1,6 +1,5 @@
 package com.example.vndbviewer.presentation.adapters
 
-import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -12,8 +11,9 @@ import com.example.vndbviewer.databinding.ItemVnInfoBinding
 import com.example.vndbviewer.domain.Vn
 
 
-class VnListAdapter(private val context: Context) :
+class VnListAdapter :
     ListAdapter<Vn, VnListAdapter.VnItemViewHolder>(VnDiffCallback()) {
+
     class VnItemViewHolder(val binding: ItemVnInfoBinding) : RecyclerView.ViewHolder(binding.root)
 
     var onVnClickListener: ((Vn) -> Unit)? = null

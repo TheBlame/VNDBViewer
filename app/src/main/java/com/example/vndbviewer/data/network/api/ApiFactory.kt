@@ -10,7 +10,6 @@ object ApiFactory {
 
     private const val BASE_URL = "https://api.vndb.org/kana/"
 
-
     private val interceptor = HttpLoggingInterceptor();
 
     private val okHttpClient = OkHttpClient.Builder()
@@ -25,7 +24,6 @@ object ApiFactory {
     .addConverterFactory(GsonConverterFactory.create())
     .client(okHttpClient)
     .build();
-
 
     val apiService: ApiService by lazy { retrofit.create(ApiService::class.java) }
 }

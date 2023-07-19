@@ -9,9 +9,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.vndbviewer.data.VnListRepositoryImp
 import com.example.vndbviewer.data.network.api.ApiFactory
 import com.example.vndbviewer.data.network.pojo.VnRequest
-import com.example.vndbviewer.domain.GetVnDetailsUseCase
-import com.example.vndbviewer.domain.UpdateVnDetailsUseCase
 import com.example.vndbviewer.domain.Vn
+import com.example.vndbviewer.domain.usecases.GetVnDetailsUseCase
+import com.example.vndbviewer.domain.usecases.UpdateVnDetailsUseCase
 import kotlinx.coroutines.launch
 
 class VnItemViewModel(application: Application) : AndroidViewModel(application) {
@@ -35,8 +35,8 @@ class VnItemViewModel(application: Application) : AndroidViewModel(application) 
                             fields = "title, image.url, rating, votecount, description"
                         )
                     ).vnListResults
-                updateVnDetailsUseCase.updateVnDetails(result)
-                _vnDetails.postValue(getVnDetailsUSeCase.getVnDetails(id))
+                updateVnDetailsUseCase(result)
+                _vnDetails.value = getVnDetailsUSeCase.invoke(id)
                 Log.d("loadCertainVnInfo", result.toString())
             } catch (e: Exception) {
                 e.message?.let { Log.e("loadCertainVnInfo", it) }
