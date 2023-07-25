@@ -1,13 +1,11 @@
-package com.example.vndbviewer.data.network.pojo
+package com.example.vndbviewer.data.database.dbmodels
 
-import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "vn_basic_info")
 data class VnBasicInfoDbModel(
-    @Embedded
-    val image: Image,
+    val image: String,
     val rating: Double,
     val votecount: Int,
     val title: String,

@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
 import androidx.navigation.fragment.navArgs
 import coil.load
 import com.example.vndbviewer.R
@@ -23,14 +22,14 @@ class VnDetailsFragment : Fragment() {
     private val binding: FragmentVnDetailsBinding
         get() = _binding ?: throw RuntimeException("VnDetails == null")
 
-    val factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
+    private val factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return VnItemViewModel(activity!!.application, args.id) as T
+            return activity?.let { VnItemViewModel(it.application, args.id) } as T
         }
     }
 
     private val viewModel by lazy {
-        ViewModelProvider(this, factory).get(VnItemViewModel::class.java)
+        ViewModelProvider(this, factory)[VnItemViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -44,7 +43,7 @@ class VnDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.vnDetails.observe(viewLifecycleOwner, Observer {
-            binding.poster.load(it.image?.url) {
+            binding.poster.load(it.image) {
                 crossfade(true)
                 crossfade(200)
                 placeholder(R.drawable.loading_animation)

@@ -31,7 +31,7 @@ class VnListAdapter :
         val vn = getItem(position)
         holder.binding.tittle.text = vn.title
         holder.binding.rating.text = vn.rating.toString()
-        holder.binding.poster.load(vn.image?.url) {
+        holder.binding.poster.load(vn.image) {
             crossfade(true)
             crossfade(250)
             placeholder(R.drawable.loading_animation)

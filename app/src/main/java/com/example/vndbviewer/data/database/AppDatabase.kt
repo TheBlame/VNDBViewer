@@ -4,10 +4,8 @@ import android.app.Application
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.vndbviewer.data.network.pojo.VnAdditionalInfoDbModel
-import com.example.vndbviewer.data.network.pojo.VnBasicInfoDbModel
-import com.example.vndbviewer.data.network.pojo.VnFullInfo
-import com.example.vndbviewer.domain.Vn
+import com.example.vndbviewer.data.database.dbmodels.VnAdditionalInfoDbModel
+import com.example.vndbviewer.data.database.dbmodels.VnBasicInfoDbModel
 
 @Database(
     entities = [VnBasicInfoDbModel::class, VnAdditionalInfoDbModel::class],

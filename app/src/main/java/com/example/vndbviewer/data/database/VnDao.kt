@@ -6,11 +6,9 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-import androidx.room.Update
-import com.example.vndbviewer.data.network.pojo.VnAdditionalInfoDbModel
-import com.example.vndbviewer.data.network.pojo.VnBasicInfoDbModel
-import com.example.vndbviewer.data.network.pojo.VnFullInfo
-import com.example.vndbviewer.domain.Vn
+import com.example.vndbviewer.data.database.dbmodels.VnAdditionalInfoDbModel
+import com.example.vndbviewer.data.database.dbmodels.VnBasicInfoDbModel
+import com.example.vndbviewer.data.database.dbmodels.VnFullInfo
 
 @Dao
 interface VnDao {
@@ -26,5 +24,5 @@ interface VnDao {
 
     @Transaction
     @Query("SELECT * FROM vn_basic_info WHERE id == :id LIMIT 1")
-    suspend fun getVnFullInfo(id: String): VnFullInfo
+    fun getVnFullInfo(id: String): LiveData<VnFullInfo>
 }
