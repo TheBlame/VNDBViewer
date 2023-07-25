@@ -10,5 +10,5 @@ interface VnListRepository {
 
     suspend fun addVnList(list: List<Vn>)
 
-    suspend fun updateVnDetails(list: List<Vn>)
+    suspend fun updateVnDetails(vn: Vn)
 }

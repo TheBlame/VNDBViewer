@@ -5,6 +5,8 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.vndbviewer.data.VnListRepositoryImp
 import com.example.vndbviewer.data.network.api.ApiFactory
@@ -14,7 +16,7 @@ import com.example.vndbviewer.domain.usecases.GetVnDetailsUseCase
 import com.example.vndbviewer.domain.usecases.UpdateVnDetailsUseCase
 import kotlinx.coroutines.launch
 
-class VnItemViewModel(application: Application) : AndroidViewModel(application) {
+class VnItemViewModel(application: Application, arg: String) : AndroidViewModel(application) {
 
     private val repository = VnListRepositoryImp(application)
 
@@ -25,22 +27,7 @@ class VnItemViewModel(application: Application) : AndroidViewModel(application) 
     val vnDetails: LiveData<Vn>
         get() = _vnDetails
 
-    fun loadCertainVnInfo(id: String) {
-        viewModelScope.launch {
-            try {
-                val result: List<Vn> =
-                    ApiFactory.apiService.postToVnEndpoint(
-                        VnRequest(
-                            filters = listOf("id", "=", id),
-                            fields = "title, image.url, rating, votecount, description"
-                        )
-                    ).vnListResults
-                updateVnDetailsUseCase(result)
-                _vnDetails.value = getVnDetailsUSeCase.invoke(id)
-                Log.d("loadCertainVnInfo", result.toString())
-            } catch (e: Exception) {
-                e.message?.let { Log.e("loadCertainVnInfo", it) }
-            }
-        }
+    init {
+        viewModelScope.launch { _vnDetails.value = getVnDetailsUSeCase.invoke(arg) }
     }
 }

@@ -4,9 +4,16 @@ import android.app.Application
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.vndbviewer.data.network.pojo.VnAdditionalInfoDbModel
+import com.example.vndbviewer.data.network.pojo.VnBasicInfoDbModel
+import com.example.vndbviewer.data.network.pojo.VnFullInfo
 import com.example.vndbviewer.domain.Vn
 
-@Database(entities = [Vn::class], version = 1, exportSchema = false)
+@Database(
+    entities = [VnBasicInfoDbModel::class, VnAdditionalInfoDbModel::class],
+    version = 1,
+    exportSchema = false
+)
 abstract class AppDatabase : RoomDatabase() {
 
     companion object {

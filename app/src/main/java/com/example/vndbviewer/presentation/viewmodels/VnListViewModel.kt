@@ -20,31 +20,4 @@ class VnListViewModel(application: Application) : AndroidViewModel(application) 
     private val addVnListUseCase = AddVnListUseCase(repository)
 
     val vnList = getVnListUseCase()
-
-    init {
-        loadVnList()
-    }
-
-    private fun loadVnList() {
-        viewModelScope.launch {
-            try {
-                val result: List<Vn> =
-                    ApiFactory.apiService.postToVnEndpoint(
-                        VnRequest(
-                            page = 1,
-                            results = 50,
-                            reverse = true,
-                            sort = "rating",
-                            fields = "title, image.url, rating, votecount"
-                        )
-                    ).vnListResults
-                Log.d("loadVnList", result.toString())
-                addVnListUseCase(result)
-                Log.d("vnlist", vnList.toString())
-            } catch (e: Exception) {
-                e.message?.let { Log.e("loadVnList", it) }
-            }
-        }
-    }
-
 }

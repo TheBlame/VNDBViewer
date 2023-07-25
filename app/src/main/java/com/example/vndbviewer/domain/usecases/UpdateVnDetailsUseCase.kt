@@ -5,7 +5,7 @@ import com.example.vndbviewer.domain.VnListRepository
 
 class UpdateVnDetailsUseCase(private val vnListRepository: VnListRepository) {
 
-    suspend operator fun invoke(list: List<Vn>) {
-        vnListRepository.updateVnDetails(list)
+    suspend operator fun invoke(vn: Vn) {
+        vnListRepository.updateVnDetails(vn)
     }
 }

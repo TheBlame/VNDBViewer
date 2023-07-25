@@ -3,6 +3,7 @@ package com.example.vndbviewer.presentation.adapters
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -12,7 +13,7 @@ import com.example.vndbviewer.domain.Vn
 
 
 class VnListAdapter :
-    ListAdapter<Vn, VnListAdapter.VnItemViewHolder>(VnDiffCallback()) {
+    ListAdapter<Vn, VnListAdapter.VnItemViewHolder>(VnDiffCallback) {
 
     class VnItemViewHolder(val binding: ItemVnInfoBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -37,5 +38,15 @@ class VnListAdapter :
             error(R.drawable.ic_broken_image)
         }
         holder.binding.root.setOnClickListener { onVnClickListener?.invoke(vn) }
+    }
+
+    private object VnDiffCallback: DiffUtil.ItemCallback<Vn>() {
+        override fun areItemsTheSame(oldItem: Vn, newItem: Vn): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: Vn, newItem: Vn): Boolean {
+            return oldItem == newItem
+        }
     }
 }
