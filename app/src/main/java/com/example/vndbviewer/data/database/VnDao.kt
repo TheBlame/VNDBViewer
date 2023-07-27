@@ -1,6 +1,7 @@
 package com.example.vndbviewer.data.database
 
 import androidx.lifecycle.LiveData
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -14,7 +15,7 @@ import com.example.vndbviewer.data.database.dbmodels.VnFullInfo
 interface VnDao {
 
     @Query("SELECT * FROM vn_basic_info ORDER BY rating DESC, votecount DESC")
-    fun getVnList(): LiveData<List<VnBasicInfoDbModel>>
+    fun getVnList(): PagingSource<Int, VnBasicInfoDbModel>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertVnList(vnList: List<VnBasicInfoDbModel>)
@@ -25,4 +26,7 @@ interface VnDao {
     @Transaction
     @Query("SELECT * FROM vn_basic_info WHERE id == :id LIMIT 1")
     fun getVnFullInfo(id: String): LiveData<VnFullInfo>
+
+    @Query("DELETE FROM vn_basic_info")
+    suspend fun clearVnList()
 }

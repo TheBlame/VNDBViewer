@@ -66,7 +66,7 @@ class VnMapper {
         mapEntityToBasicDbModelInfo(it)
     }
 
-    fun mapVnResultsToBasicDbModelInfo(vnResults: VnResults) = VnBasicInfoDbModel(
+    fun mapVnResponseToBasicDbModelInfo(vnResults: VnResults) = VnBasicInfoDbModel(
         id = vnResults.id,
         image = vnResults.image.url,
         rating = vnResults.rating,
@@ -74,11 +74,11 @@ class VnMapper {
         title = vnResults.title
     )
 
-    fun mapListVnResultsToListBasicDbModelInfo(list: List<VnResults>) = list.map {
-        mapVnResultsToBasicDbModelInfo(it)
+    fun mapListVnResponseToListBasicDbModelInfo(list: List<VnResults>) = list.map {
+        mapVnResponseToBasicDbModelInfo(it)
     }
 
-    fun mapVnResultsToAdditionalDbModelInfo(vnResults: VnResults) = VnAdditionalInfoDbModel(
+    fun mapVnResponseToAdditionalDbModelInfo(vnResults: VnResults) = VnAdditionalInfoDbModel(
         id = vnResults.id,
         description = vnResults.description
     )
