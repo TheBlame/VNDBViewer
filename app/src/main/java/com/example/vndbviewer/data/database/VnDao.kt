@@ -1,6 +1,5 @@
 package com.example.vndbviewer.data.database
 
-import androidx.lifecycle.LiveData
 import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
@@ -25,7 +24,7 @@ interface VnDao {
 
     @Transaction
     @Query("SELECT * FROM vn_basic_info WHERE id == :id LIMIT 1")
-    fun getVnFullInfo(id: String): LiveData<VnFullInfo>
+    suspend fun getVnFullInfo(id: String): VnFullInfo
 
     @Query("DELETE FROM vn_basic_info")
     suspend fun clearVnList()

@@ -6,7 +6,7 @@ import com.example.vndbviewer.data.database.dbmodels.VnFullInfo
 import com.example.vndbviewer.data.network.pojo.VnResults
 import com.example.vndbviewer.domain.Vn
 
-class VnMapper {
+object VnMapper {
 
     fun mapBasicDbModelInfoToEntity(vnBasicInfoDbModel: VnBasicInfoDbModel) = Vn(
         id = vnBasicInfoDbModel.id,
@@ -23,7 +23,7 @@ class VnMapper {
         rating = fullInfo.vnBasicInfoDbModel.rating,
         votecount = fullInfo.vnBasicInfoDbModel.votecount,
         title = fullInfo.vnBasicInfoDbModel.title,
-        description = fullInfo.vnAdditionalInfoDbModel.description
+        description = fullInfo.vnAdditionalInfoDbModel?.description
     )
 
     fun mapEntityToBasicDbModelInfo(vn: Vn) = VnBasicInfoDbModel(
@@ -42,7 +42,7 @@ class VnMapper {
         title = fullInfo.vnBasicInfoDbModel.title
     )
 
-    fun mapFullInfoToAdditionalDbModelInfo(fullInfo: VnFullInfo) = fullInfo.vnAdditionalInfoDbModel.description?.let {
+    fun mapFullInfoToAdditionalDbModelInfo(fullInfo: VnFullInfo) = fullInfo.vnAdditionalInfoDbModel?.description?.let {
         VnAdditionalInfoDbModel(
         id = it,
         description = fullInfo.vnAdditionalInfoDbModel.description

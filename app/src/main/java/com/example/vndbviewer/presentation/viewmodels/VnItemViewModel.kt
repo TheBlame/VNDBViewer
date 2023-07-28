@@ -2,10 +2,13 @@ package com.example.vndbviewer.presentation.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.viewModelScope
 import com.example.vndbviewer.data.VnListRepositoryImp
 import com.example.vndbviewer.domain.Vn
 import com.example.vndbviewer.domain.usecases.GetVnDetailsUseCase
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.shareIn
 
 class VnItemViewModel(application: Application, arg: String) : AndroidViewModel(application) {
 
@@ -13,5 +16,8 @@ class VnItemViewModel(application: Application, arg: String) : AndroidViewModel(
 
     private val getVnDetailsUSeCase = GetVnDetailsUseCase(repository)
 
-    val vnDetails: LiveData<Vn> = getVnDetailsUSeCase.invoke(arg)
+    val vnDetails: Flow<Vn> = getVnDetailsUSeCase.invoke(arg)
+        .shareIn(viewModelScope,
+        started = SharingStarted.Lazily,
+        replay = 1)
 }

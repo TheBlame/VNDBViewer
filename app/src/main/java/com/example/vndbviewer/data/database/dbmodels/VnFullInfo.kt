@@ -10,5 +10,5 @@ data class VnFullInfo(
         parentColumn = "id",
         entityColumn = "id"
     )
-    val vnAdditionalInfoDbModel: VnAdditionalInfoDbModel
+    val vnAdditionalInfoDbModel: VnAdditionalInfoDbModel?
 )

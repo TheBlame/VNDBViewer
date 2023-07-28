@@ -5,14 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import coil.load
 import com.example.vndbviewer.R
 import com.example.vndbviewer.databinding.FragmentVnDetailsBinding
 import com.example.vndbviewer.presentation.viewmodels.VnItemViewModel
+import kotlinx.coroutines.launch
 
 class VnDetailsFragment : Fragment() {
 
@@ -42,17 +45,21 @@ class VnDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.vnDetails.observe(viewLifecycleOwner, Observer {
-            binding.poster.load(it.image) {
-                crossfade(true)
-                crossfade(200)
-                placeholder(R.drawable.loading_animation)
-                error(R.drawable.ic_broken_image)
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                viewModel.vnDetails.collect {
+                    binding.poster.load(it.image) {
+                        crossfade(true)
+                        crossfade(200)
+                        placeholder(R.drawable.loading_animation)
+                        error(R.drawable.ic_broken_image)
+                    }
+                    binding.rating.text = it.rating.toString()
+                    binding.tittle.text = it.title
+                    binding.description.text = it.description
+                }
             }
-            binding.rating.text = it.rating.toString()
-            binding.tittle.text = it.title
-            binding.description.text = it.description
-        })
+        }
     }
 
     override fun onDestroyView() {

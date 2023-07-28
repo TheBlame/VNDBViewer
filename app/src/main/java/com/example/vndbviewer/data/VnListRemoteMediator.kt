@@ -17,12 +17,9 @@ private const val STARTING_PAGE_INDEX = 1
 
 @OptIn(ExperimentalPagingApi::class)
 class VnListRemoteMediator(
-    private val NumOfPages: Int,
     private val service: ApiService,
     private val db: AppDatabase
 ) : RemoteMediator<Int, VnBasicInfoDbModel>() {
-
-    val mapper = VnMapper()
 
     override suspend fun load(
         loadType: LoadType,
@@ -82,7 +79,7 @@ class VnListRemoteMediator(
                     RemoteKeys(id = it.id, prevKey = prevKey, nextKey = nextKey)
                 }
                 db.remoteKeysDao().insertAll(keys)
-                db.vnDao().insertVnList(mapper.mapListVnResponseToListBasicDbModelInfo(vnList))
+                db.vnDao().insertVnList(VnMapper.mapListVnResponseToListBasicDbModelInfo(vnList))
             }
             return MediatorResult.Success(endOfPaginationReached)
         } catch (e: IOException) {
