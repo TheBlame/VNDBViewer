@@ -5,8 +5,9 @@ import com.example.vndbviewer.data.database.dbmodels.VnBasicInfoDbModel
 import com.example.vndbviewer.data.database.dbmodels.VnFullInfo
 import com.example.vndbviewer.data.network.pojo.VnResults
 import com.example.vndbviewer.domain.Vn
+import javax.inject.Inject
 
-object VnMapper {
+class VnMapper @Inject constructor() {
 
     fun mapBasicDbModelInfoToEntity(vnBasicInfoDbModel: VnBasicInfoDbModel) = Vn(
         id = vnBasicInfoDbModel.id,

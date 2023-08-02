@@ -1,23 +1,17 @@
 package com.example.vndbviewer.presentation.viewmodels
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.vndbviewer.data.VnListRepositoryImp
+import androidx.lifecycle.ViewModel
+import com.example.vndbviewer.di.IdQualifier
 import com.example.vndbviewer.domain.Vn
 import com.example.vndbviewer.domain.usecases.GetVnDetailsUseCase
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.shareIn
+import javax.inject.Inject
 
-class VnItemViewModel(application: Application, arg: String) : AndroidViewModel(application) {
+class VnItemViewModel @Inject constructor(
+    private val getVnDetailsUseCase: GetVnDetailsUseCase,
+    @IdQualifier private val arg: String
+) : ViewModel() {
 
-    private val repository = VnListRepositoryImp(application)
 
-    private val getVnDetailsUSeCase = GetVnDetailsUseCase(repository)
-
-    val vnDetails: Flow<Vn> = getVnDetailsUSeCase.invoke(arg)
-        .shareIn(viewModelScope,
-        started = SharingStarted.Lazily,
-        replay = 1)
+    val vnDetails: Flow<Vn> = getVnDetailsUseCase.invoke(arg)
 }

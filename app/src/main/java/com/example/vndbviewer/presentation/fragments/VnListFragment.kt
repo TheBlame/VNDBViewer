@@ -1,5 +1,6 @@
 package com.example.vndbviewer.presentation.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,11 +16,14 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import com.example.vndbviewer.databinding.FragmentVnListBinding
+import com.example.vndbviewer.presentation.VndbApplication
 import com.example.vndbviewer.presentation.adapters.VnListAdapter
 import com.example.vndbviewer.presentation.adapters.VnLoadStateAdapter
+import com.example.vndbviewer.presentation.viewmodels.ViewModelFactory
 import com.example.vndbviewer.presentation.viewmodels.VnListViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class VnListFragment : Fragment() {
 
@@ -27,12 +31,25 @@ class VnListFragment : Fragment() {
     private val binding: FragmentVnListBinding
         get() = _binding ?: throw RuntimeException("VnListFragment == null")
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
     private val viewModel by lazy {
-        ViewModelProvider(this)[VnListViewModel::class.java]
+        ViewModelProvider(this, viewModelFactory)[VnListViewModel::class.java]
+    }
+
+    private val component by lazy {
+        (requireActivity().application as VndbApplication).component
+            .fragmentComponentFactory().create("")
     }
 
     private val vnListAdapter by lazy {
         VnListAdapter()
+    }
+
+    override fun onAttach(context: Context) {
+        component.inject(this)
+        super.onAttach(context)
     }
 
 

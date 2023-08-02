@@ -12,14 +12,17 @@ import com.example.vndbviewer.data.network.api.ApiService
 import com.example.vndbviewer.data.network.pojo.VnRequest
 import retrofit2.HttpException
 import java.io.IOException
+import javax.inject.Inject
 
 private const val STARTING_PAGE_INDEX = 1
 
 @OptIn(ExperimentalPagingApi::class)
-class VnListRemoteMediator(
+class VnListRemoteMediator @Inject constructor(
     private val service: ApiService,
-    private val db: AppDatabase
+    private val db: AppDatabase,
+    private val mapper: VnMapper
 ) : RemoteMediator<Int, VnBasicInfoDbModel>() {
+
 
     override suspend fun load(
         loadType: LoadType,
@@ -79,7 +82,7 @@ class VnListRemoteMediator(
                     RemoteKeys(id = it.id, prevKey = prevKey, nextKey = nextKey)
                 }
                 db.remoteKeysDao().insertAll(keys)
-                db.vnDao().insertVnList(VnMapper.mapListVnResponseToListBasicDbModelInfo(vnList))
+                db.vnDao().insertVnList(mapper.mapListVnResponseToListBasicDbModelInfo(vnList))
             }
             return MediatorResult.Success(endOfPaginationReached)
         } catch (e: IOException) {

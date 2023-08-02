@@ -1,6 +1,5 @@
 package com.example.vndbviewer.data
 
-import android.app.Application
 import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
@@ -20,37 +19,41 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class VnListRepositoryImp(application: Application) : VnListRepository {
-
-    private val db = AppDatabase.getInstance(application)
-    private val service = ApiService.create()
+class VnListRepositoryImpl @Inject constructor(
+    private val db: AppDatabase,
+    private val service: ApiService,
+    private val mapper: VnMapper,
+    private val remoteMediator: VnListRemoteMediator
+) : VnListRepository {
 
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
     @OptIn(ExperimentalPagingApi::class)
     override fun getVnList(): Flow<PagingData<Vn>> {
-
         val pagingSourceFactory = { db.vnDao().getVnList() }
         val flow = Pager(
             config = PagingConfig(
                 pageSize = 50,
                 enablePlaceholders = false
             ),
-            remoteMediator = VnListRemoteMediator(
-                service,
-                db
-            ),
+            remoteMediator = remoteMediator
+            ,
             pagingSourceFactory = pagingSourceFactory
         ).flow
+        Log.d("Singleton test", db.toString() )
+        Log.d("Singleton test", service.toString())
         return flow.map { pagingData ->
-            pagingData.map { VnMapper.mapBasicDbModelInfoToEntity(it) }
+            pagingData.map { mapper.mapBasicDbModelInfoToEntity(it) }
         }
     }
 
     override fun getVnDetails(id: String): Flow<Vn> = flow {
         loadCertainVnInfo(id)
-        emit(VnMapper.mapFullInfoToEntity(db.vnDao().getVnFullInfo(id)))
+        Log.d("Singleton test", db.toString() )
+        Log.d("Singleton test", service.toString())
+        emit(mapper.mapFullInfoToEntity(db.vnDao().getVnFullInfo(id)))
     }
 
     private suspend fun addVnList(list: List<VnBasicInfoDbModel>) {
@@ -73,7 +76,7 @@ class VnListRepositoryImp(application: Application) : VnListRepository {
                         fields = "title, image.url, rating, votecount"
                     )
                 ).vnListResults
-            addVnList(VnMapper.mapListVnResponseToListBasicDbModelInfo(result))
+            addVnList(mapper.mapListVnResponseToListBasicDbModelInfo(result))
         } catch (e: Exception) {
             e.message?.let { Log.e("loadVnList", it) }
         }
@@ -88,7 +91,7 @@ class VnListRepositoryImp(application: Application) : VnListRepository {
                         fields = "title, image.url, rating, votecount, description"
                     )
                 ).vnListResults
-            updateVnDetails(VnMapper.mapVnResponseToAdditionalDbModelInfo(result.first()))
+            updateVnDetails(mapper.mapVnResponseToAdditionalDbModelInfo(result.first()))
         } catch (e: Exception) {
             e.message?.let { Log.e("loadCertainVnInfo", it) }
         }
