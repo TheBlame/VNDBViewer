@@ -2,6 +2,7 @@ package com.example.vndbviewer.presentation.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,8 +16,10 @@ import coil.load
 import com.example.vndbviewer.R
 import com.example.vndbviewer.databinding.FragmentVnDetailsBinding
 import com.example.vndbviewer.presentation.VndbApplication
+import com.example.vndbviewer.presentation.adapters.TagListAdapter
 import com.example.vndbviewer.presentation.viewmodels.ViewModelFactory
 import com.example.vndbviewer.presentation.viewmodels.VnItemViewModel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -42,6 +45,10 @@ class VnDetailsFragment : Fragment() {
             .create(args.id)
     }
 
+    private val tagListAdapter by lazy {
+        TagListAdapter()
+    }
+
     override fun onAttach(context: Context) {
         component.inject(this)
         super.onAttach(context)
@@ -57,9 +64,10 @@ class VnDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.tagList.adapter = tagListAdapter
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                viewModel.vnDetails.collect {
+                viewModel.vnDetails.collectLatest {
                     binding.poster.load(it.image) {
                         crossfade(true)
                         crossfade(200)
@@ -69,6 +77,8 @@ class VnDetailsFragment : Fragment() {
                     binding.rating.text = it.rating.toString()
                     binding.tittle.text = it.title
                     binding.description.text = it.description
+                    Log.d("tags", it.tags.toString())
+                    tagListAdapter.submitList(it.tags)
                 }
             }
         }

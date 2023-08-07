@@ -82,15 +82,17 @@ class VnListRepositoryImpl @Inject constructor(
         }
     }
 
+    //withContext() { }
     private suspend fun loadCertainVnInfo(id: String) {
         try {
             val result: List<VnResults> =
                 service.postToVnEndpoint(
                     VnRequest(
                         filters = listOf("id", "=", id),
-                        fields = "title, image.url, rating, votecount, description"
+                        fields = "title, image.url, rating, votecount, description, tags.rating, tags.spoiler, tags.name, tags.category"
                     )
                 ).vnListResults
+            Log.d("vnresults", "${result.first()}")
             updateVnDetails(mapper.mapVnResponseToAdditionalDbModelInfo(result.first()))
         } catch (e: Exception) {
             e.message?.let { Log.e("loadCertainVnInfo", it) }

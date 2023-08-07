@@ -15,7 +15,8 @@ class VnMapper @Inject constructor() {
         rating = vnBasicInfoDbModel.rating,
         votecount = vnBasicInfoDbModel.votecount,
         title = vnBasicInfoDbModel.title,
-        description = ""
+        description = "",
+        tags = listOf()
     )
 
     fun mapFullInfoToEntity(fullInfo: VnFullInfo) = Vn(
@@ -24,7 +25,8 @@ class VnMapper @Inject constructor() {
         rating = fullInfo.vnBasicInfoDbModel.rating,
         votecount = fullInfo.vnBasicInfoDbModel.votecount,
         title = fullInfo.vnBasicInfoDbModel.title,
-        description = fullInfo.vnAdditionalInfoDbModel?.description
+        description = fullInfo.vnAdditionalInfoDbModel?.description,
+        tags = fullInfo.vnAdditionalInfoDbModel?.tags
     )
 
     fun mapEntityToBasicDbModelInfo(vn: Vn) = VnBasicInfoDbModel(
@@ -43,21 +45,21 @@ class VnMapper @Inject constructor() {
         title = fullInfo.vnBasicInfoDbModel.title
     )
 
-    fun mapFullInfoToAdditionalDbModelInfo(fullInfo: VnFullInfo) = fullInfo.vnAdditionalInfoDbModel?.description?.let {
-        VnAdditionalInfoDbModel(
-        id = it,
-        description = fullInfo.vnAdditionalInfoDbModel.description
-    )
-    }
+//    fun mapFullInfoToAdditionalDbModelInfo(fullInfo: VnFullInfo) = fullInfo.vnAdditionalInfoDbModel?.description?.let {
+//        VnAdditionalInfoDbModel(
+//        id = it,
+//        description = fullInfo.vnAdditionalInfoDbModel.description
+//    )
+//    }
 
     fun mapListFullInfoToListBasicDbModelInfo(list: List<VnFullInfo>) = list.map {
         mapFullInfoToBasicDbModelInfo(it)
     }
 
-    fun mapEntityToAdditionalDbModelInfo(vn: Vn) = VnAdditionalInfoDbModel(
-        id = vn.id,
-        description = vn.description
-    )
+//    fun mapEntityToAdditionalDbModelInfo(vn: Vn) = VnAdditionalInfoDbModel(
+//        id = vn.id,
+//        description = vn.description,
+//    )
 
     fun mapListDbModelToListEntity(list: List<VnBasicInfoDbModel>) = list.map {
         mapBasicDbModelInfoToEntity(it)
@@ -81,6 +83,7 @@ class VnMapper @Inject constructor() {
 
     fun mapVnResponseToAdditionalDbModelInfo(vnResults: VnResults) = VnAdditionalInfoDbModel(
         id = vnResults.id,
-        description = vnResults.description
+        description = vnResults.description,
+        tags = vnResults.tags
     )
 }

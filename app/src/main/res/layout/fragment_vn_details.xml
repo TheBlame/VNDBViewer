@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.fragments.VnDetailsFragment">
 
     <ScrollView
@@ -46,7 +47,15 @@
                 android:layout_height="match_parent"
                 android:padding="4dp"
                 tools:text="spfdmasdfpksamaspkfdmaspfkmsafpsakmfaspkfmafpkma pma fpasmfasp kfmasfp kmasfpkasm faspkfmas fpkmf pkasmfspakfmas pkfmasfpkasmf aspkfm apkfmasf pkasm fapskfm aspkfmasfp kasmfp aksmfsapkf masfpkasm fpka" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/tagList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="2"
 
+
+                tools:listitem="@layout/item_tag"/>
         </LinearLayout>
     </ScrollView>
 
