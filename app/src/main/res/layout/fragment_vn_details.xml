@@ -47,14 +47,29 @@
                 android:layout_height="match_parent"
                 android:padding="4dp"
                 tools:text="spfdmasdfpksamaspkfdmaspfkmsafpsakmfaspkfmafpkma pma fpasmfasp kfmasfp kmasfpkasm faspkfmas fpkmf pkasmfspakfmas pkfmasfpkasmf aspkfm apkfmasf pkasm fapskfm aspkfmasfp kasmfp aksmfsapkf masfpkasm fpka" />
+
+            <Button
+                android:id="@+id/tagContentButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Content"/>
+            <Button
+                android:id="@+id/tagSexualContentButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sexual Content"/>
+            <Button
+                android:id="@+id/tagTechnicalButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Technical"/>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/tagList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="2"
-
-
                 tools:listitem="@layout/item_tag"/>
         </LinearLayout>
     </ScrollView>
