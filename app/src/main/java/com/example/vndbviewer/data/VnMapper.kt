@@ -26,7 +26,7 @@ class VnMapper @Inject constructor() {
         votecount = fullInfo.vnBasicInfoDbModel.votecount,
         title = fullInfo.vnBasicInfoDbModel.title,
         description = fullInfo.vnAdditionalInfoDbModel?.description,
-        tags = fullInfo.vnAdditionalInfoDbModel?.tags
+        tags = fullInfo.vnAdditionalInfoDbModel.tags
     )
 
     fun mapEntityToBasicDbModelInfo(vn: Vn) = VnBasicInfoDbModel(

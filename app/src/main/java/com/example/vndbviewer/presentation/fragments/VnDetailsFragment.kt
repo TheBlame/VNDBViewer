@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -14,13 +15,12 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import coil.load
 import com.example.vndbviewer.R
-import com.example.vndbviewer.data.network.pojo.Tags
 import com.example.vndbviewer.databinding.FragmentVnDetailsBinding
-import com.example.vndbviewer.domain.Vn
 import com.example.vndbviewer.presentation.VndbApplication
 import com.example.vndbviewer.presentation.adapters.TagListAdapter
 import com.example.vndbviewer.presentation.viewmodels.ViewModelFactory
 import com.example.vndbviewer.presentation.viewmodels.VnItemViewModel
+import com.google.android.material.chip.Chip
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -67,59 +67,47 @@ class VnDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.tagList.adapter = tagListAdapter
-
+        setupChips()
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                viewModel.vnDetails.collectLatest {state ->
-                    if (state != null) {
-                        binding.poster.load(state.vn.image) {
-                            crossfade(true)
-                            crossfade(200)
-                            placeholder(R.drawable.loading_animation)
-                            error(R.drawable.ic_broken_image)
-                        }
-                        binding.rating.text = state.vn.rating.toString()
-                        binding.tittle.text = state.vn.title
-                        binding.description.text = state.vn.description
-                        filter(state)
-                        Log.d("vmcollect", state.toString())
-                        setupButtons(state)
+                viewModel.state.collectLatest { state ->
+                    binding.poster.load(state.vn.image) {
+                        crossfade(true)
+                        crossfade(200)
+                        placeholder(R.drawable.loading_animation)
+                        error(R.drawable.ic_broken_image)
                     }
+                    binding.rating.text = state.vn.rating.toString()
+                    binding.tittle.text = state.vn.title
+                    binding.description.text = state.vn.description
+                    tagListAdapter.submitList(state.vn.tags)
+                    binding.tagContentChip.isChecked = state.content
+                    binding.tagSexualContentChip.isChecked = state.sexual
+                    binding.tagTechnicalChip.isChecked = state.technical
                 }
             }
         }
     }
 
-    private fun setupButtons(state: VnItemViewModel.State) {
-        binding.tagSexualContentButton.setOnClickListener {
+    private fun setupChips() {
+        binding.tagSexualContentChip.setOnClickListener {
             viewModel.changeSexualContent()
-            filter(state)
         }
-        binding.tagContentButton.setOnClickListener {
+        binding.tagContentChip.setOnClickListener {
             viewModel.changeContent()
-            filter(state)
         }
-        binding.tagTechnicalButton.setOnClickListener {
+        binding.tagTechnicalChip.setOnClickListener {
             viewModel.changeTechnical()
-            filter(state)
         }
-    }
+        binding.spoilerLvlGroup.setOnCheckedStateChangeListener { group, checkedIds ->
+            when (group.checkedChipId) {
+                binding.spoilerLvl0.id -> viewModel.changeSpoilerLvlTo0()
 
+                binding.spoilerLvl1.id -> viewModel.changeSpoilerLvlTo1()
 
-    private fun filter(state: VnItemViewModel.State) {
-        val result = state.vn.tags?.toMutableList()
-        for (i in state.vn.tags.orEmpty()) {
-            if (!state.sexual && i.category == "ero") {
-                result?.remove(i)
-            }
-            if (!state.content && i.category == "cont") {
-                result?.remove(i)
-            }
-            if (!state.technical && i.category == "tech") {
-                result?.remove(i)
+                binding.spoilerLvl2.id -> viewModel.changeSpoilerLvlTo2()
             }
         }
-        tagListAdapter.submitList(result)
     }
 
     override fun onDestroyView() {

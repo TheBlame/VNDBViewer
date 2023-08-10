@@ -48,21 +48,68 @@
                 android:padding="4dp"
                 tools:text="spfdmasdfpksamaspkfdmaspfkmsafpsakmfaspkfmafpkma pma fpasmfasp kfmasfp kmasfpkasm faspkfmas fpkmf pkasmfspakfmas pkfmasfpkasmf aspkfm apkfmasf pkasm fapskfm aspkfmasfp kasmfp aksmfsapkf masfpkasm fpka" />
 
-            <Button
-                android:id="@+id/tagContentButton"
+            <com.google.android.material.chip.ChipGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/tagContentChip"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Content"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/tagSexualContentChip"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sexual Content"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/tagTechnicalChip"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Technical"/>
+
+            </com.google.android.material.chip.ChipGroup>
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/spoilerLvlGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Content"/>
-            <Button
-                android:id="@+id/tagSexualContentButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sexual Content"/>
-            <Button
-                android:id="@+id/tagTechnicalButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Technical"/>
+                android:tag="spoilerLvl"
+                app:singleSelection="true"
+                app:selectionRequired="true"
+                app:checkedChip="@id/spoilerLvl0">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/spoilerLvl0"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tag="spoilerLvl0"
+                    android:text="Hide spoilers"
+                    />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/spoilerLvl1"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tag="spoilerLvl1"
+                    android:text="show minor spoilers"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/spoilerLvl2"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tag="spoilerLvl2"
+                    android:text="spoil me!"/>
+
+            </com.google.android.material.chip.ChipGroup>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/tagList"

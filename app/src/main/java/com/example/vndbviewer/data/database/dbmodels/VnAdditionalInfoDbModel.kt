@@ -8,7 +8,7 @@ import com.example.vndbviewer.data.network.pojo.Tags
 @Entity(tableName = "vn_additional_info")
 data class VnAdditionalInfoDbModel(
     val description: String?,
-    val tags: List<Tags>?,
+    val tags: List<Tags>,
     @PrimaryKey
     val id: String
 )
