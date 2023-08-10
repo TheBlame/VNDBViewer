@@ -102,10 +102,15 @@ class VnDetailsFragment : Fragment() {
         binding.spoilerLvlGroup.setOnCheckedStateChangeListener { group, checkedIds ->
             when (group.checkedChipId) {
                 binding.spoilerLvl0.id -> viewModel.changeSpoilerLvlTo0()
-
                 binding.spoilerLvl1.id -> viewModel.changeSpoilerLvlTo1()
-
                 binding.spoilerLvl2.id -> viewModel.changeSpoilerLvlTo2()
+            }
+        }
+
+        binding.spoilerQuantityGroup.setOnCheckedStateChangeListener { group, checkedIds ->
+            when(group.checkedChipId) {
+                binding.spoilerSummary.id -> viewModel.changeSpoilerQuantityToSummary()
+                binding.spoilerAll.id -> viewModel.changeSpoilerQuantityToAll()
             }
         }
     }

@@ -28,9 +28,9 @@ class VnItemViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            getVnDetailsUseCase.invoke(arg).collectLatest {
-                _fullTags = it.tags.toList()
-                val filteredVn = it.copy(tags = filterTags())
+            getVnDetailsUseCase.invoke(arg).collectLatest {vn ->
+                _fullTags = vn.tags.toList().sortedByDescending { it.rating }
+                val filteredVn = vn.copy(tags = filterTags())
                 _state.value = UiState(vn = filteredVn)
             }
         }
@@ -61,7 +61,11 @@ class VnItemViewModel @Inject constructor(
             }
         }
         Log.d("tags", "tags number after filter ${result.size}")
-        return result.toList()
+        return if (state.value.spoilerQuantity == SpoilerQuantity.SPOILER_SUMMARY) {
+            result.take(40)
+        } else {
+            result.toList()
+        }
     }
 
     fun changeSexualContent() {
@@ -94,6 +98,16 @@ class VnItemViewModel @Inject constructor(
         setupNewState()
     }
 
+    fun changeSpoilerQuantityToSummary() {
+        _state.value.spoilerQuantity = SpoilerQuantity.SPOILER_SUMMARY
+        setupNewState()
+    }
+
+    fun changeSpoilerQuantityToAll() {
+        _state.value.spoilerQuantity = SpoilerQuantity.SPOILER_ALL
+        setupNewState()
+    }
+
     private fun setupNewState() {
         val newVn = _state.value.vn.copy(tags = filterTags())
         val newUiState = state.value.copy(vn = newVn)
@@ -105,6 +119,7 @@ class VnItemViewModel @Inject constructor(
         var sexual: Boolean = false,
         var technical: Boolean = true,
         var spoilerLvl: SpoilerLvl = SpoilerLvl.SPOILER_LVL_IS_0,
+        var spoilerQuantity: SpoilerQuantity = SpoilerQuantity.SPOILER_SUMMARY,
         var vn: Vn
     )
 
@@ -112,5 +127,10 @@ class VnItemViewModel @Inject constructor(
         SPOILER_LVL_IS_0,
         SPOILER_LVL_IS_1,
         SPOILER_LVL_IS_2
+    }
+
+    enum class SpoilerQuantity {
+        SPOILER_SUMMARY,
+        SPOILER_ALL
     }
 }
