@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.vndbviewer.data.network.pojo.Tags
 import com.example.vndbviewer.databinding.ItemTagBinding
-import com.example.vndbviewer.domain.Vn
 import java.math.RoundingMode
 import java.text.DecimalFormat
 

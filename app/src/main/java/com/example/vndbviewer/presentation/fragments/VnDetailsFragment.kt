@@ -2,25 +2,25 @@ package com.example.vndbviewer.presentation.fragments
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
+import androidx.viewpager2.widget.ViewPager2
 import coil.load
 import com.example.vndbviewer.R
 import com.example.vndbviewer.databinding.FragmentVnDetailsBinding
 import com.example.vndbviewer.presentation.VndbApplication
-import com.example.vndbviewer.presentation.adapters.TagListAdapter
+import com.example.vndbviewer.presentation.adapters.ViewPagerAdapter
 import com.example.vndbviewer.presentation.viewmodels.ViewModelFactory
 import com.example.vndbviewer.presentation.viewmodels.VnItemViewModel
-import com.google.android.material.chip.Chip
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -47,9 +47,14 @@ class VnDetailsFragment : Fragment() {
             .create(args.id)
     }
 
-    private val tagListAdapter by lazy {
-        TagListAdapter()
-    }
+    private val fragList by lazy { listOf(
+        TagsFragment(viewModel),
+        Todo1Fragment(),
+        Todo2Fragment()
+    ) }
+
+    private lateinit var viewPager: ViewPager2
+    private lateinit var tabLayout: TabLayout
 
     override fun onAttach(context: Context) {
         component.inject(this)
@@ -66,8 +71,18 @@ class VnDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.tagList.adapter = tagListAdapter
-        setupChips()
+        tabLayout = binding.tabs
+        viewPager = binding.viewPager
+        viewPager.adapter = activity?.let { ViewPagerAdapter(it, fragList) }
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.text = when(position) {
+                0 -> "Tags"
+                1 -> "TODO1"
+                2 -> "TODO2"
+                else -> throw Exception()
+            }
+        }.attach()
+
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 viewModel.state.collectLatest { state ->
@@ -80,37 +95,7 @@ class VnDetailsFragment : Fragment() {
                     binding.rating.text = state.vn.rating.toString()
                     binding.tittle.text = state.vn.title
                     binding.description.text = state.vn.description
-                    tagListAdapter.submitList(state.vn.tags)
-                    binding.tagContentChip.isChecked = state.content
-                    binding.tagSexualContentChip.isChecked = state.sexual
-                    binding.tagTechnicalChip.isChecked = state.technical
                 }
-            }
-        }
-    }
-
-    private fun setupChips() {
-        binding.tagSexualContentChip.setOnClickListener {
-            viewModel.changeSexualContent()
-        }
-        binding.tagContentChip.setOnClickListener {
-            viewModel.changeContent()
-        }
-        binding.tagTechnicalChip.setOnClickListener {
-            viewModel.changeTechnical()
-        }
-        binding.spoilerLvlGroup.setOnCheckedStateChangeListener { group, checkedIds ->
-            when (group.checkedChipId) {
-                binding.spoilerLvl0.id -> viewModel.changeSpoilerLvlTo0()
-                binding.spoilerLvl1.id -> viewModel.changeSpoilerLvlTo1()
-                binding.spoilerLvl2.id -> viewModel.changeSpoilerLvlTo2()
-            }
-        }
-
-        binding.spoilerQuantityGroup.setOnCheckedStateChangeListener { group, checkedIds ->
-            when(group.checkedChipId) {
-                binding.spoilerSummary.id -> viewModel.changeSpoilerQuantityToSummary()
-                binding.spoilerAll.id -> viewModel.changeSpoilerQuantityToAll()
             }
         }
     }
