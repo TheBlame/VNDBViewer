@@ -1,6 +1,8 @@
 package com.example.vndbviewer.di
 
 import android.app.Application
+import com.example.vndbviewer.presentation.viewmodels.VnItemViewModel
+import com.example.vndbviewer.presentation.viewmodels.VnListViewModel
 import dagger.BindsInstance
 import dagger.Component
 
@@ -12,7 +14,9 @@ import dagger.Component
 )
 interface ApplicationComponent {
 
-    fun fragmentComponentFactory(): FragmentComponent.Factory
+    fun vnItemViewModel(): VnItemViewModel.Factory
+
+    fun vnListViewModel(): VnListViewModel.Factory
 
     @Component.Factory
     interface Factory {

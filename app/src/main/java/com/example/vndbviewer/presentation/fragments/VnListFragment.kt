@@ -9,7 +9,10 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -19,7 +22,7 @@ import com.example.vndbviewer.databinding.FragmentVnListBinding
 import com.example.vndbviewer.presentation.VndbApplication
 import com.example.vndbviewer.presentation.adapters.VnListAdapter
 import com.example.vndbviewer.presentation.adapters.VnLoadStateAdapter
-import com.example.vndbviewer.presentation.viewmodels.ViewModelFactory
+import com.example.vndbviewer.presentation.viewmodels.Factory
 import com.example.vndbviewer.presentation.viewmodels.VnListViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -31,26 +34,19 @@ class VnListFragment : Fragment() {
     private val binding: FragmentVnListBinding
         get() = _binding ?: throw RuntimeException("VnListFragment == null")
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelFactory
-
-    private val viewModel by lazy {
-        ViewModelProvider(this, viewModelFactory)[VnListViewModel::class.java]
-    }
-
     private val component by lazy {
         (requireActivity().application as VndbApplication).component
-            .fragmentComponentFactory().create("")
     }
+
+    private val viewModel by lazyViewModel {
+        stateHandle ->  component.vnListViewModel().create(stateHandle)
+    }
+
 
     private val vnListAdapter by lazy {
         VnListAdapter()
     }
 
-    override fun onAttach(context: Context) {
-        component.inject(this)
-        super.onAttach(context)
-    }
 
 
     override fun onCreateView(
@@ -122,6 +118,12 @@ class VnListFragment : Fragment() {
             }
 
         }
+    }
+
+    inline fun <reified T : ViewModel> Fragment.lazyViewModel(
+        noinline create: (stateHandle: SavedStateHandle) -> T
+    ) = viewModels<T> {
+        Factory(this, create)
     }
 
     override fun onDestroyView() {

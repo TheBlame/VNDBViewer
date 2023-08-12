@@ -6,7 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -17,7 +20,7 @@ import com.example.vndbviewer.R
 import com.example.vndbviewer.databinding.FragmentVnDetailsBinding
 import com.example.vndbviewer.presentation.VndbApplication
 import com.example.vndbviewer.presentation.adapters.ViewPagerAdapter
-import com.example.vndbviewer.presentation.viewmodels.ViewModelFactory
+import com.example.vndbviewer.presentation.viewmodels.Factory
 import com.example.vndbviewer.presentation.viewmodels.VnItemViewModel
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -29,23 +32,19 @@ class VnDetailsFragment : Fragment() {
 
     private val args by navArgs<VnDetailsFragmentArgs>()
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelFactory
-
     private var _binding: FragmentVnDetailsBinding? = null
     private val binding: FragmentVnDetailsBinding
         get() = _binding ?: throw RuntimeException("VnDetails == null")
 
-
-    private val viewModel by lazy {
-        ViewModelProvider(this, viewModelFactory)[VnItemViewModel::class.java]
-    }
-
     private val component by lazy {
         (requireActivity().application as VndbApplication).component
-            .fragmentComponentFactory()
-            .create(args.id)
     }
+    
+    private val viewModel by lazyViewModel {
+        stateHandle ->  component.vnItemViewModel().create(args.id, stateHandle)
+    }
+
+    
 
     private val fragList by lazy { listOf(
         TagsFragment(viewModel),
@@ -56,10 +55,6 @@ class VnDetailsFragment : Fragment() {
     private lateinit var viewPager: ViewPager2
     private lateinit var tabLayout: TabLayout
 
-    override fun onAttach(context: Context) {
-        component.inject(this)
-        super.onAttach(context)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -98,6 +93,12 @@ class VnDetailsFragment : Fragment() {
                 }
             }
         }
+    }
+
+    inline fun <reified T : ViewModel> Fragment.lazyViewModel(
+        noinline create: (stateHandle: SavedStateHandle) -> T
+    ) = viewModels<T> {
+        Factory(this, create)
     }
 
     override fun onDestroyView() {

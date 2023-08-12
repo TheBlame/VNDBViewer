@@ -1,21 +1,26 @@
 package com.example.vndbviewer.presentation.viewmodels
 
 import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.vndbviewer.data.network.pojo.Tags
 import com.example.vndbviewer.di.IdQualifier
 import com.example.vndbviewer.domain.Vn
 import com.example.vndbviewer.domain.usecases.GetVnDetailsUseCase
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class VnItemViewModel @Inject constructor(
+class VnItemViewModel @AssistedInject constructor(
     private val getVnDetailsUseCase: GetVnDetailsUseCase,
-    @IdQualifier private val arg: String
+    @Assisted private val arg: String,
+    @Assisted savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
 
@@ -132,5 +137,10 @@ class VnItemViewModel @Inject constructor(
     enum class SpoilerQuantity {
         SPOILER_SUMMARY,
         SPOILER_ALL
+    }
+
+    @AssistedFactory
+    interface Factory {
+        fun create(arg: String, savedStateHandle: SavedStateHandle): VnItemViewModel
     }
 }
