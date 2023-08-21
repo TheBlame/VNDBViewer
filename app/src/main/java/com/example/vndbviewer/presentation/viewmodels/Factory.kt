@@ -19,10 +19,10 @@ class Factory<T: ViewModel>(
     ): T {
         return create.invoke(handle) as T
     }
+}
 
-    inline fun <reified T : ViewModel> Fragment.lazyViewModel(
-        noinline create: (stateHandle: SavedStateHandle) -> T
-    ) = viewModels<T> {
-        Factory(this, create)
-    }
+inline fun <reified T : ViewModel> Fragment.lazyViewModel(
+    noinline create: (stateHandle: SavedStateHandle) -> T
+) = viewModels<T> {
+    Factory(this, create)
 }

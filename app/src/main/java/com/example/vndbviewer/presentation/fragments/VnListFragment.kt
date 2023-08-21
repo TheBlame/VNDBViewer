@@ -24,6 +24,7 @@ import com.example.vndbviewer.presentation.adapters.VnListAdapter
 import com.example.vndbviewer.presentation.adapters.VnLoadStateAdapter
 import com.example.vndbviewer.presentation.viewmodels.Factory
 import com.example.vndbviewer.presentation.viewmodels.VnListViewModel
+import com.example.vndbviewer.presentation.viewmodels.lazyViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -118,12 +119,6 @@ class VnListFragment : Fragment() {
             }
 
         }
-    }
-
-    inline fun <reified T : ViewModel> Fragment.lazyViewModel(
-        noinline create: (stateHandle: SavedStateHandle) -> T
-    ) = viewModels<T> {
-        Factory(this, create)
     }
 
     override fun onDestroyView() {

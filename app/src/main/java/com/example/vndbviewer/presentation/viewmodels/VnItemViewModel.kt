@@ -33,12 +33,14 @@ class VnItemViewModel @AssistedInject constructor(
 
     init {
         viewModelScope.launch {
-            getVnDetailsUseCase.invoke(arg).collectLatest {vn ->
+            getVnDetailsUseCase.invoke(arg).collectLatest { vn ->
                 _fullTags = vn.tags.toList().sortedByDescending { it.rating }
                 val filteredVn = vn.copy(tags = filterTags())
                 _state.value = UiState(vn = filteredVn)
             }
         }
+
+        Log.d("vm", "create")
     }
 
     private fun filterTags(): List<Tags> {
@@ -137,6 +139,11 @@ class VnItemViewModel @AssistedInject constructor(
     enum class SpoilerQuantity {
         SPOILER_SUMMARY,
         SPOILER_ALL
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        Log.d("vm", "cleared")
     }
 
     @AssistedFactory

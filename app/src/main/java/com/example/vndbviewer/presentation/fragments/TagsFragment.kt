@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.vndbviewer.databinding.FragmentTagsBinding
@@ -15,7 +17,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
-class TagsFragment (private val viewModel: VnItemViewModel) : Fragment() {
+class TagsFragment : Fragment() {
 
     private var _binding: FragmentTagsBinding? = null
     private val binding: FragmentTagsBinding
@@ -24,6 +26,10 @@ class TagsFragment (private val viewModel: VnItemViewModel) : Fragment() {
     private val tagListAdapter by lazy {
         TagListAdapter()
     }
+
+    private val viewModel: VnItemViewModel by viewModels(
+        ownerProducer = {requireParentFragment()}
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,6 +50,7 @@ class TagsFragment (private val viewModel: VnItemViewModel) : Fragment() {
                     binding.tagContentChip.isChecked = state.content
                     binding.tagSexualContentChip.isChecked = state.sexual
                     binding.tagTechnicalChip.isChecked = state.technical
+                        //      TODO() проверка стейтов всех чип групп
                 }
             }
         }

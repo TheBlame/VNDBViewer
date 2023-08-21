@@ -22,6 +22,7 @@ import com.example.vndbviewer.presentation.VndbApplication
 import com.example.vndbviewer.presentation.adapters.ViewPagerAdapter
 import com.example.vndbviewer.presentation.viewmodels.Factory
 import com.example.vndbviewer.presentation.viewmodels.VnItemViewModel
+import com.example.vndbviewer.presentation.viewmodels.lazyViewModel
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.flow.collectLatest
@@ -47,9 +48,9 @@ class VnDetailsFragment : Fragment() {
     
 
     private val fragList by lazy { listOf(
-        TagsFragment(viewModel),
-        Todo1Fragment(),
-        Todo2Fragment()
+        TagsFragment(),
+        TagsFragment(),
+        TagsFragment()
     ) }
 
     private lateinit var viewPager: ViewPager2
@@ -66,18 +67,24 @@ class VnDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        tabLayout = binding.tabs
-        viewPager = binding.viewPager
-        viewPager.adapter = activity?.let { ViewPagerAdapter(it, fragList) }
-        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.text = when(position) {
-                0 -> "Tags"
-                1 -> "TODO1"
-                2 -> "TODO2"
-                else -> throw Exception()
-            }
-        }.attach()
 
+
+        childFragmentManager.beginTransaction().add(binding.tabsFragmentPlaceholder.id, fragList[0]).commit()
+        binding.tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                childFragmentManager.beginTransaction()
+                    .replace(binding.tabsFragmentPlaceholder.id, fragList[tab?.position!!]).commit()
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+
+            }
+
+        })
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 viewModel.state.collectLatest { state ->
@@ -93,12 +100,6 @@ class VnDetailsFragment : Fragment() {
                 }
             }
         }
-    }
-
-    inline fun <reified T : ViewModel> Fragment.lazyViewModel(
-        noinline create: (stateHandle: SavedStateHandle) -> T
-    ) = viewModels<T> {
-        Factory(this, create)
     }
 
     override fun onDestroyView() {
