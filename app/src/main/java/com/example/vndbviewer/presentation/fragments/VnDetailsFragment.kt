@@ -19,6 +19,7 @@ import coil.load
 import com.example.vndbviewer.R
 import com.example.vndbviewer.databinding.FragmentVnDetailsBinding
 import com.example.vndbviewer.presentation.VndbApplication
+import com.example.vndbviewer.presentation.adapters.ScreenshotGroupAdapter
 import com.example.vndbviewer.presentation.adapters.ViewPagerAdapter
 import com.example.vndbviewer.presentation.viewmodels.Factory
 import com.example.vndbviewer.presentation.viewmodels.VnItemViewModel
@@ -45,8 +46,9 @@ class VnDetailsFragment : Fragment() {
         stateHandle ->  component.vnItemViewModel().create(args.id, stateHandle)
     }
 
-    
-
+    private val screenshotGroupAdapter by lazy {
+        ScreenshotGroupAdapter()
+    }
     private val fragList by lazy { listOf(
         TagsFragment(),
         TagsFragment(),
@@ -67,6 +69,7 @@ class VnDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.screenshots.adapter = screenshotGroupAdapter
 
 
         childFragmentManager.beginTransaction().add(binding.tabsFragmentPlaceholder.id, fragList[0]).commit()
@@ -97,6 +100,7 @@ class VnDetailsFragment : Fragment() {
                     binding.rating.text = state.vn.rating.toString()
                     binding.tittle.text = state.vn.title
                     binding.description.text = state.vn.description
+                    screenshotGroupAdapter.submitList(state.vn.screenshots)
                 }
             }
         }

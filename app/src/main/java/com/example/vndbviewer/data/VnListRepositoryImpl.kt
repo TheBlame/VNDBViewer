@@ -89,7 +89,7 @@ class VnListRepositoryImpl @Inject constructor(
                 service.postToVnEndpoint(
                     VnRequest(
                         filters = listOf("id", "=", id),
-                        fields = "title, image.url, rating, votecount, description, tags.rating, tags.spoiler, tags.name, tags.category"
+                        fields = "title, image.url, rating, votecount, description, tags.rating, tags.spoiler, tags.name, tags.category, screenshots.thumbnail, screenshots.release.title, screenshots.sexual"
                     )
                 ).vnListResults
             Log.d("vnresults", "${result.first()}")

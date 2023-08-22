@@ -7,5 +7,6 @@ data class VnResults(
     val votecount: Int,
     val title: String,
     val description: String,
-    val tags: List<Tags>
+    val tags: List<Tags>,
+    val screenshots: List<Screenshot>
 )

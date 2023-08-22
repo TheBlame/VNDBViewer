@@ -48,13 +48,21 @@
             app:layout_constraintTop_toBottomOf="@id/rating"
             tools:text="spfdmasdfpksamaspkfdmaspfkmsafpsakmfaspkfmafpkma pma fpasmfasp kfmasfp kmasfpkasm faspkfmas fpkmf pkasmfspakfmas pkfmasfpkasmf aspkfm apkfmasf pkasm fapskfm aspkfmasfp kasmfp aksmfsapkf masfpkasm fpka" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/screenshots"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/description"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/description">
+            app:layout_constraintTop_toBottomOf="@id/screenshots">
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"

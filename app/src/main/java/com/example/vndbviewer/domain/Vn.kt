@@ -1,5 +1,6 @@
 package com.example.vndbviewer.domain
 
+import com.example.vndbviewer.data.network.pojo.Screenshot
 import com.example.vndbviewer.data.network.pojo.Tags
 
 data class Vn(
@@ -9,5 +10,6 @@ data class Vn(
     val votecount: Int = 0,
     val title: String = "",
     val description: String? = "",
-    val tags: List<Tags> = listOf()
+    val tags: List<Tags> = listOf(),
+    val screenshots: List<ScreenshotList> = listOf()
 )
