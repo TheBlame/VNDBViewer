@@ -1,6 +1,5 @@
 package com.example.vndbviewer.domain
 
-import com.example.vndbviewer.data.network.pojo.Screenshot
 import com.example.vndbviewer.data.network.pojo.Tags
 
 data class Vn(

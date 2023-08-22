@@ -44,7 +44,7 @@ class VnListAdapter :
         }
     }
 
-    private object VnDiffCallback: DiffUtil.ItemCallback<Vn>() {
+    private object VnDiffCallback : DiffUtil.ItemCallback<Vn>() {
         override fun areItemsTheSame(oldItem: Vn, newItem: Vn): Boolean {
             return oldItem.id == newItem.id
         }

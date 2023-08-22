@@ -6,5 +6,5 @@ data class VnRequest(
     val reverse: Boolean? = null,
     val sort: String? = null,
     val fields: String? = null,
-    var filters : List<String>? = null
+    var filters: List<String>? = null
 )

@@ -1,16 +1,11 @@
 package com.example.vndbviewer.presentation.fragments
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
@@ -20,15 +15,10 @@ import com.example.vndbviewer.R
 import com.example.vndbviewer.databinding.FragmentVnDetailsBinding
 import com.example.vndbviewer.presentation.VndbApplication
 import com.example.vndbviewer.presentation.adapters.ScreenshotGroupAdapter
-import com.example.vndbviewer.presentation.adapters.ViewPagerAdapter
-import com.example.vndbviewer.presentation.viewmodels.Factory
-import com.example.vndbviewer.presentation.viewmodels.VnItemViewModel
 import com.example.vndbviewer.presentation.viewmodels.lazyViewModel
 import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class VnDetailsFragment : Fragment() {
 
@@ -41,19 +31,21 @@ class VnDetailsFragment : Fragment() {
     private val component by lazy {
         (requireActivity().application as VndbApplication).component
     }
-    
-    private val viewModel by lazyViewModel {
-        stateHandle ->  component.vnItemViewModel().create(args.id, stateHandle)
+
+    private val viewModel by lazyViewModel { stateHandle ->
+        component.vnItemViewModel().create(args.id, stateHandle)
     }
 
     private val screenshotGroupAdapter by lazy {
         ScreenshotGroupAdapter()
     }
-    private val fragList by lazy { listOf(
-        TagsFragment(),
-        TagsFragment(),
-        TagsFragment()
-    ) }
+    private val fragList by lazy {
+        listOf(
+            TagsFragment(),
+            TagsFragment(),
+            TagsFragment()
+        )
+    }
 
     private lateinit var viewPager: ViewPager2
     private lateinit var tabLayout: TabLayout
@@ -70,9 +62,8 @@ class VnDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.screenshots.adapter = screenshotGroupAdapter
-
-
-        childFragmentManager.beginTransaction().add(binding.tabsFragmentPlaceholder.id, fragList[0]).commit()
+        childFragmentManager.beginTransaction().add(binding.tabsFragmentPlaceholder.id, fragList[0])
+            .commit()
         binding.tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 childFragmentManager.beginTransaction()

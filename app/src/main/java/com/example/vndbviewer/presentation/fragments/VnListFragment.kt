@@ -1,6 +1,5 @@
 package com.example.vndbviewer.presentation.fragments
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,11 +8,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
@@ -22,12 +17,9 @@ import com.example.vndbviewer.databinding.FragmentVnListBinding
 import com.example.vndbviewer.presentation.VndbApplication
 import com.example.vndbviewer.presentation.adapters.VnListAdapter
 import com.example.vndbviewer.presentation.adapters.VnLoadStateAdapter
-import com.example.vndbviewer.presentation.viewmodels.Factory
-import com.example.vndbviewer.presentation.viewmodels.VnListViewModel
 import com.example.vndbviewer.presentation.viewmodels.lazyViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class VnListFragment : Fragment() {
 
@@ -39,15 +31,14 @@ class VnListFragment : Fragment() {
         (requireActivity().application as VndbApplication).component
     }
 
-    private val viewModel by lazyViewModel {
-        stateHandle ->  component.vnListViewModel().create(stateHandle)
+    private val viewModel by lazyViewModel { stateHandle ->
+        component.vnListViewModel().create(stateHandle)
     }
 
 
     private val vnListAdapter by lazy {
         VnListAdapter()
     }
-
 
 
     override fun onCreateView(
@@ -117,7 +108,6 @@ class VnListFragment : Fragment() {
                     }
                 }
             }
-
         }
     }
 

@@ -27,7 +27,7 @@ class VnMapper @Inject constructor() {
         rating = fullInfo.vnBasicInfoDbModel.rating,
         votecount = fullInfo.vnBasicInfoDbModel.votecount,
         title = fullInfo.vnBasicInfoDbModel.title,
-        description = fullInfo.vnAdditionalInfoDbModel?.description,
+        description = fullInfo.vnAdditionalInfoDbModel.description,
         tags = fullInfo.vnAdditionalInfoDbModel.tags,
         screenshots = fullInfo.vnAdditionalInfoDbModel.screenshots
     )
@@ -88,17 +88,19 @@ class VnMapper @Inject constructor() {
         id = vnResults.id,
         description = vnResults.description,
         tags = vnResults.tags,
-        screenshots = buildList { vnResults.screenshots.groupBy { it.release.id }.forEach { s, screenshots ->
-            add(ScreenshotList(
-                title = screenshots.first().release.title,
-                releaseId = screenshots.first().release.id,
-                screenshotList = buildList {
-                    screenshots.forEach {
-                        add(Pair(it.thumbnail, it.sexual))
+        screenshots = buildList {
+            vnResults.screenshots.groupBy { it.release.id }.forEach { s, screenshots ->
+                add(ScreenshotList(
+                    title = screenshots.first().release.title,
+                    releaseId = screenshots.first().release.id,
+                    screenshotList = buildList {
+                        screenshots.forEach {
+                            add(Pair(it.thumbnail, it.sexual))
+                        }
                     }
-                }
-            ))
-        } }
+                ))
+            }
+        }
     )
 
 //    fun mapPojoScreenshotsToScreenshotList(vnResults: VnResults): List<ScreenshotList> {

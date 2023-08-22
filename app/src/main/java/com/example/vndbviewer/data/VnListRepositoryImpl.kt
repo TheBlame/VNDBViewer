@@ -38,11 +38,10 @@ class VnListRepositoryImpl @Inject constructor(
                 pageSize = 50,
                 enablePlaceholders = false
             ),
-            remoteMediator = remoteMediator
-            ,
+            remoteMediator = remoteMediator,
             pagingSourceFactory = pagingSourceFactory
         ).flow
-        Log.d("Singleton test", db.toString() )
+        Log.d("Singleton test", db.toString())
         Log.d("Singleton test", service.toString())
         return flow.map { pagingData ->
             pagingData.map { mapper.mapBasicDbModelInfoToEntity(it) }
@@ -51,7 +50,7 @@ class VnListRepositoryImpl @Inject constructor(
 
     override fun getVnDetails(id: String): Flow<Vn> = flow {
         loadCertainVnInfo(id)
-        Log.d("Singleton test", db.toString() )
+        Log.d("Singleton test", db.toString())
         Log.d("Singleton test", service.toString())
         emit(mapper.mapFullInfoToEntity(db.vnDao().getVnFullInfo(id)))
     }

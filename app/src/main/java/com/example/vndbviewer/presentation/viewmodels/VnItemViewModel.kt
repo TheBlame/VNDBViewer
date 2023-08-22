@@ -5,7 +5,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.vndbviewer.data.network.pojo.Tags
-import com.example.vndbviewer.di.IdQualifier
 import com.example.vndbviewer.domain.Vn
 import com.example.vndbviewer.domain.usecases.GetVnDetailsUseCase
 import dagger.assisted.Assisted
@@ -15,7 +14,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class VnItemViewModel @AssistedInject constructor(
     private val getVnDetailsUseCase: GetVnDetailsUseCase,

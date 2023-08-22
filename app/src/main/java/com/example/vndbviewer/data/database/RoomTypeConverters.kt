@@ -1,7 +1,6 @@
 package com.example.vndbviewer.data.database
 
 import androidx.room.TypeConverter
-import com.example.vndbviewer.data.network.pojo.Screenshot
 import com.example.vndbviewer.data.network.pojo.Tags
 import com.example.vndbviewer.domain.ScreenshotList
 import com.google.gson.Gson

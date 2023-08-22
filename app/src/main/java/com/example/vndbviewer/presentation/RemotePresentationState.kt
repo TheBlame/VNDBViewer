@@ -17,14 +17,17 @@ fun Flow<CombinedLoadStates>.asRemotePresentationState(): Flow<RemotePresentatio
                 is LoadState.Loading -> RemotePresentationState.REMOTE_LOADING
                 else -> state
             }
+
             RemotePresentationState.INITIAL -> when (loadState.mediator?.refresh) {
                 is LoadState.Loading -> RemotePresentationState.REMOTE_LOADING
                 else -> state
             }
+
             RemotePresentationState.REMOTE_LOADING -> when (loadState.source.refresh) {
                 is LoadState.Loading -> RemotePresentationState.SOURCE_LOADING
                 else -> state
             }
+
             RemotePresentationState.SOURCE_LOADING -> when (loadState.source.refresh) {
                 is LoadState.NotLoading -> RemotePresentationState.PRESENTED
                 else -> state

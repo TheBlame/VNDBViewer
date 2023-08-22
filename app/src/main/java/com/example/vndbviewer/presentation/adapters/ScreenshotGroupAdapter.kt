@@ -1,23 +1,16 @@
 package com.example.vndbviewer.presentation.adapters
 
-import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.vndbviewer.data.network.pojo.Screenshot
 import com.example.vndbviewer.databinding.ItemScreenshotsBinding
 import com.example.vndbviewer.domain.ScreenshotList
 
 class ScreenshotGroupAdapter :
     ListAdapter<ScreenshotList, ScreenshotGroupAdapter.ScreenshotGroupViewHolder>(DiffCallback) {
-
-//    private val screenshotImgAdapter by lazy {
-//        ScreenshotImgAdapter()
-//    }
 
     class ScreenshotGroupViewHolder(val binding: ItemScreenshotsBinding) :
         RecyclerView.ViewHolder(binding.root)

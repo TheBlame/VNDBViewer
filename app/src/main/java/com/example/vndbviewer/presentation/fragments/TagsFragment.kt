@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.vndbviewer.databinding.FragmentTagsBinding
@@ -28,7 +27,7 @@ class TagsFragment : Fragment() {
     }
 
     private val viewModel: VnItemViewModel by viewModels(
-        ownerProducer = {requireParentFragment()}
+        ownerProducer = { requireParentFragment() }
     )
 
     override fun onCreateView(
@@ -50,7 +49,7 @@ class TagsFragment : Fragment() {
                     binding.tagContentChip.isChecked = state.content
                     binding.tagSexualContentChip.isChecked = state.sexual
                     binding.tagTechnicalChip.isChecked = state.technical
-                        //      TODO() проверка стейтов всех чип групп
+                    //      TODO() проверка стейтов всех чип групп
                 }
             }
         }
@@ -75,7 +74,7 @@ class TagsFragment : Fragment() {
         }
 
         binding.spoilerQuantityGroup.setOnCheckedStateChangeListener { group, checkedIds ->
-            when(group.checkedChipId) {
+            when (group.checkedChipId) {
                 binding.spoilerSummary.id -> viewModel.changeSpoilerQuantityToSummary()
                 binding.spoilerAll.id -> viewModel.changeSpoilerQuantityToAll()
             }

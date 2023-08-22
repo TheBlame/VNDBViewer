@@ -11,9 +11,11 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
-import javax.inject.Inject
 
-class VnListViewModel @AssistedInject constructor(private val getVnListUseCase: GetVnListUseCase, @Assisted savedStateHandle: SavedStateHandle) : ViewModel() {
+class VnListViewModel @AssistedInject constructor(
+    private val getVnListUseCase: GetVnListUseCase,
+    @Assisted savedStateHandle: SavedStateHandle
+) : ViewModel() {
 
     val vnList = getVnListUseCase.invoke()
         .cachedIn(viewModelScope)

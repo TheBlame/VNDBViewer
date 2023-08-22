@@ -15,7 +15,7 @@ class TagListAdapter : ListAdapter<Tags, TagListAdapter.TagViewHolder>(VnDiffCal
 
     class TagViewHolder(val binding: ItemTagBinding) : RecyclerView.ViewHolder(binding.root)
 
-    private object VnDiffCallback: DiffUtil.ItemCallback<Tags>() {
+    private object VnDiffCallback : DiffUtil.ItemCallback<Tags>() {
         override fun areItemsTheSame(oldItem: Tags, newItem: Tags): Boolean {
             return oldItem.id == newItem.id
         }
