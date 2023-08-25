@@ -12,6 +12,11 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.example.vndbviewer.databinding.FragmentTagsBinding
 import com.example.vndbviewer.presentation.adapters.TagListAdapter
 import com.example.vndbviewer.presentation.viewmodels.VnItemViewModel
+import com.example.vndbviewer.presentation.viewmodels.VnItemViewModel.SpoilerLvl.SPOILER_LVL_IS_0
+import com.example.vndbviewer.presentation.viewmodels.VnItemViewModel.SpoilerLvl.SPOILER_LVL_IS_1
+import com.example.vndbviewer.presentation.viewmodels.VnItemViewModel.SpoilerLvl.SPOILER_LVL_IS_2
+import com.example.vndbviewer.presentation.viewmodels.VnItemViewModel.SpoilerQuantity.SPOILER_ALL
+import com.example.vndbviewer.presentation.viewmodels.VnItemViewModel.SpoilerQuantity.SPOILER_SUMMARY
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -49,7 +54,15 @@ class TagsFragment : Fragment() {
                     binding.tagContentChip.isChecked = state.content
                     binding.tagSexualContentChip.isChecked = state.sexual
                     binding.tagTechnicalChip.isChecked = state.technical
-                    //      TODO() проверка стейтов всех чип групп
+                    when (state.spoilerLvl) {
+                        SPOILER_LVL_IS_0 -> binding.spoilerLvlGroup.check(binding.spoilerLvl0.id)
+                        SPOILER_LVL_IS_1 -> binding.spoilerLvlGroup.check(binding.spoilerLvl1.id)
+                        SPOILER_LVL_IS_2 -> binding.spoilerLvlGroup.check(binding.spoilerLvl2.id)
+                    }
+                    when (state.spoilerQuantity) {
+                        SPOILER_SUMMARY -> binding.spoilerQuantityGroup.check(binding.spoilerSummary.id)
+                        SPOILER_ALL -> binding.spoilerQuantityGroup.check(binding.spoilerAll.id)
+                    }
                 }
             }
         }

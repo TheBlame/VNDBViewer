@@ -9,7 +9,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
-import androidx.viewpager2.widget.ViewPager2
 import coil.load
 import com.example.vndbviewer.R
 import com.example.vndbviewer.databinding.FragmentVnDetailsBinding
@@ -37,7 +36,7 @@ class VnDetailsFragment : Fragment() {
     }
 
     private val screenshotGroupAdapter by lazy {
-        ScreenshotGroupAdapter(fragmentManager = childFragmentManager)
+        ScreenshotGroupAdapter()
     }
     private val fragList by lazy {
         listOf(

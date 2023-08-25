@@ -3,7 +3,6 @@ package com.example.vndbviewer.presentation.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -13,7 +12,7 @@ import com.example.vndbviewer.databinding.ItemScreenshotsBinding
 import com.example.vndbviewer.domain.ScreenshotList
 import com.example.vndbviewer.presentation.fragments.VnDetailsFragmentDirections
 
-class ScreenshotGroupAdapter(private var fragmentManager: FragmentManager) :
+class ScreenshotGroupAdapter :
     ListAdapter<ScreenshotList, ScreenshotGroupAdapter.ScreenshotGroupViewHolder>(DiffCallback) {
 
     class ScreenshotGroupViewHolder(val binding: ItemScreenshotsBinding) :
@@ -35,7 +34,7 @@ class ScreenshotGroupAdapter(private var fragmentManager: FragmentManager) :
     }
 
     override fun onBindViewHolder(holder: ScreenshotGroupViewHolder, position: Int) {
-        val screenshotImgAdapter = ScreenshotImgAdapter(fragmentManager)
+        val screenshotImgAdapter = ScreenshotImgAdapter()
         val group = getItem(position)
         holder.binding.screenshotsImages.adapter = screenshotImgAdapter
         holder.binding.releaseName.text = group.title

@@ -1,10 +1,8 @@
 package com.example.vndbviewer.presentation.adapters
 
-import android.animation.Animator
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +11,7 @@ import com.example.vndbviewer.R
 import com.example.vndbviewer.databinding.ScreenshotImgBinding
 
 
-class ScreenshotImgAdapter(private var fragmentManager: FragmentManager) :
+class ScreenshotImgAdapter :
     ListAdapter<Pair<String, Double>, ScreenshotImgAdapter.ScreenshotImgViewHolder>(DiffCallback) {
 
     class ScreenshotImgViewHolder(val binding: ScreenshotImgBinding) :
