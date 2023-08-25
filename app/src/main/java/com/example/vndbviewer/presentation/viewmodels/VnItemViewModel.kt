@@ -21,7 +21,6 @@ class VnItemViewModel @AssistedInject constructor(
     @Assisted savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-
     private val _state = MutableStateFlow(UiState(vn = Vn()))
     val state = _state.asStateFlow()
 

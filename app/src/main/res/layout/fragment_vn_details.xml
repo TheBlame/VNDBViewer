@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:fillViewport="true"
+    android:id="@+id/vn_details_fragment"
     tools:context=".presentation.fragments.VnDetailsFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout

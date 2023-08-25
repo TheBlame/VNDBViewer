@@ -37,7 +37,7 @@ class VnDetailsFragment : Fragment() {
     }
 
     private val screenshotGroupAdapter by lazy {
-        ScreenshotGroupAdapter()
+        ScreenshotGroupAdapter(fragmentManager = childFragmentManager)
     }
     private val fragList by lazy {
         listOf(
@@ -46,10 +46,6 @@ class VnDetailsFragment : Fragment() {
             TagsFragment()
         )
     }
-
-    private lateinit var viewPager: ViewPager2
-    private lateinit var tabLayout: TabLayout
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,7 +58,8 @@ class VnDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.screenshots.adapter = screenshotGroupAdapter
-        childFragmentManager.beginTransaction().add(binding.tabsFragmentPlaceholder.id, fragList[0])
+        childFragmentManager.beginTransaction()
+            .replace(binding.tabsFragmentPlaceholder.id, fragList[0])
             .commit()
         binding.tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {

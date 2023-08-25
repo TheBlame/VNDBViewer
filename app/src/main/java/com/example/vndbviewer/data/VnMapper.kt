@@ -102,34 +102,4 @@ class VnMapper @Inject constructor() {
             }
         }
     )
-
-//    fun mapPojoScreenshotsToScreenshotList(vnResults: VnResults): List<ScreenshotList> {
-//        val m = vnResults.screenshots.groupBy { it.release.id }.forEach { s, screenshots ->
-//            buildList<ScreenshotList> {
-//                add(
-//                    ScreenshotList(
-//                        title = screenshots.first().release.title,
-//                        releaseId = screenshots.first().release.id,
-//                        screenshotList = buildList {
-//                            screenshots.forEach {
-//                                add(Pair(it.thumbnail, it.sexual))
-//                            }
-//                        }
-//                    )
-//                )
-//            }
-//        }
-//
-//        return buildList { vnResults.screenshots.groupBy { it.release.id }.forEach { s, screenshots ->
-//            add(ScreenshotList(
-//                title = screenshots.first().release.title,
-//                releaseId = screenshots.first().release.id,
-//                screenshotList = buildList {
-//                    screenshots.forEach {
-//                        add(Pair(it.thumbnail, it.sexual))
-//                    }
-//                }
-//            ))
-//        } }
-//    }
 }

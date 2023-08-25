@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace 'com.example.vndbviewer'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.example.vndbviewer"
-        minSdk 21
-        targetSdk 33
+        minSdk 24
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -44,6 +44,8 @@ dependencies {
     def lifecycle_version = "2.6.1"
     def arch_version = "2.2.0"
     def paging_version = "3.1.1"
+
+    implementation 'com.github.chrisbanes:PhotoView:2.0.0'
 
     implementation "androidx.paging:paging-runtime:$paging_version"
 

@@ -13,6 +13,8 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
     <style name="Theme.VNDBViewer.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
     <style name="Theme.VNDBViewer.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

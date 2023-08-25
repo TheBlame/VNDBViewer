@@ -9,7 +9,7 @@
         android:id="@+id/vnListFragment"
         android:name="com.example.vndbviewer.presentation.fragments.VnListFragment"
         android:label="fragment_vn_list"
-        tools:layout="@layout/fragment_vn_list" >
+        tools:layout="@layout/fragment_vn_list">
         <action
             android:id="@+id/action_vnListFragment_to_vnDetailsFragment"
             app:destination="@id/vnDetailsFragment" />
@@ -18,9 +18,26 @@
         android:id="@+id/vnDetailsFragment"
         android:name="com.example.vndbviewer.presentation.fragments.VnDetailsFragment"
         android:label="fragment_vn_details"
-        tools:layout="@layout/fragment_vn_details" >
+        tools:layout="@layout/fragment_vn_details">
         <argument
             android:name="id"
             app:argType="string" />
+        <action
+            android:id="@+id/action_vnDetailsFragment_to_screenshotPagerFragment"
+            app:destination="@+id/screenshotPagerFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/screenshotPagerFragment"
+        android:name="com.example.vndbviewer.presentation.fragments.ScreenshotPagerFragment"
+        android:label="fragment_screenshot_pager"
+        tools:layout="@layout/fragment_screenshot_pager">
+        <argument
+            android:name="urls"
+            app:argType="string[]" />
+        <argument
+            android:name="selectedImagePosition"
+            app:argType="integer" />
+    </fragment>
+
+
 </navigation>

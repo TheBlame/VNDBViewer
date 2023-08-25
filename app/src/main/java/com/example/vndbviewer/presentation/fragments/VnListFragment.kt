@@ -35,11 +35,9 @@ class VnListFragment : Fragment() {
         component.vnListViewModel().create(stateHandle)
     }
 
-
     private val vnListAdapter by lazy {
         VnListAdapter()
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,7 +66,6 @@ class VnListFragment : Fragment() {
         )
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-
                 viewModel.vnList.collectLatest {
                     Log.d("paging", "$it.is")
                     vnListAdapter.submitData(it)

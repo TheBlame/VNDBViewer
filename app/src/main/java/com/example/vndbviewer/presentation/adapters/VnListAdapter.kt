@@ -13,7 +13,7 @@ import com.example.vndbviewer.domain.Vn
 
 
 class VnListAdapter :
-    PagingDataAdapter<Vn, VnListAdapter.VnItemViewHolder>(VnDiffCallback) {
+    PagingDataAdapter<Vn, VnListAdapter.VnItemViewHolder>(DiffCallback) {
 
     class VnItemViewHolder(val binding: ItemVnInfoBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -44,7 +44,7 @@ class VnListAdapter :
         }
     }
 
-    private object VnDiffCallback : DiffUtil.ItemCallback<Vn>() {
+    private object DiffCallback : DiffUtil.ItemCallback<Vn>() {
         override fun areItemsTheSame(oldItem: Vn, newItem: Vn): Boolean {
             return oldItem.id == newItem.id
         }
