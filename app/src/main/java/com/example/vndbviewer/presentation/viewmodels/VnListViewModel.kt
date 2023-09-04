@@ -17,7 +17,7 @@ class VnListViewModel @AssistedInject constructor(
     @Assisted savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    val vnList = getVnListUseCase.invoke()
+    val vnList = getVnListUseCase()
         .cachedIn(viewModelScope)
         .onStart { Log.d("flow", "start") }
         .onCompletion { Log.d("flow", "complete") }

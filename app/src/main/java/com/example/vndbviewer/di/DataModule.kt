@@ -1,6 +1,8 @@
 package com.example.vndbviewer.di
 
 import android.app.Application
+import android.content.Context
+import android.content.SharedPreferences
 import com.example.vndbviewer.data.VnListRepositoryImpl
 import com.example.vndbviewer.data.database.AppDatabase
 import com.example.vndbviewer.data.network.api.ApiService
@@ -30,6 +32,12 @@ interface DataModule {
         @Provides
         fun provideService(): ApiService {
             return ApiService.create()
+        }
+
+        @ApplicationScope
+        @Provides
+        fun provideSharedPreferences(application: Application): SharedPreferences {
+            return application.getSharedPreferences("myPref", Context.MODE_PRIVATE)
         }
     }
 }

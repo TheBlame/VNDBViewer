@@ -8,23 +8,23 @@ import com.example.vndbviewer.R
 import com.example.vndbviewer.databinding.ScreenshotFullscreenImgBinding
 
 class ViewPagerAdapter(private val urlList: Array<String>) :
-    RecyclerView.Adapter<ViewPagerAdapter.PagerVH>() {
+    RecyclerView.Adapter<ViewPagerAdapter.PagerViewHolder>() {
 
-    class PagerVH(val binding: ScreenshotFullscreenImgBinding) :
+    class PagerViewHolder(val binding: ScreenshotFullscreenImgBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PagerVH {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PagerViewHolder {
         val binding = ScreenshotFullscreenImgBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
         )
-        return PagerVH(binding)
+        return PagerViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: PagerVH, position: Int) {
+    override fun onBindViewHolder(holder: PagerViewHolder, position: Int) {
         val img = urlList[position]
-        holder.binding.screenshotFullscreen.load(img.replace("/st/", "/sf/")) {
+        holder.binding.screenshotFullscreen.load(img.replace(THUMBNAIL_PREFIX, FULL_SIZE_PREFIX)) {
             crossfade(true)
             crossfade(250)
             placeholder(R.drawable.loading_animation)
@@ -34,6 +34,11 @@ class ViewPagerAdapter(private val urlList: Array<String>) :
 
     override fun getItemCount(): Int {
         return urlList.size
+    }
+
+    companion object {
+        private const val THUMBNAIL_PREFIX = "/st/"
+        private const val FULL_SIZE_PREFIX = "/sf/"
     }
 }
 

@@ -23,7 +23,6 @@ class VnListRemoteMediator @Inject constructor(
     private val mapper: VnMapper
 ) : RemoteMediator<Int, VnBasicInfoDbModel>() {
 
-
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, VnBasicInfoDbModel>

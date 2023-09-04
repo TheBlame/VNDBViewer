@@ -9,14 +9,18 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
+import com.example.vndbviewer.R
 import com.example.vndbviewer.databinding.FragmentVnListBinding
 import com.example.vndbviewer.presentation.VndbApplication
 import com.example.vndbviewer.presentation.adapters.VnListAdapter
 import com.example.vndbviewer.presentation.adapters.VnLoadStateAdapter
+import com.example.vndbviewer.presentation.viewmodels.LoginState
+import com.example.vndbviewer.presentation.viewmodels.UserViewModel
 import com.example.vndbviewer.presentation.viewmodels.lazyViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -35,6 +39,14 @@ class VnListFragment : Fragment() {
         component.vnListViewModel().create(stateHandle)
     }
 
+    private val userViewModelFactory by lazy {
+        component.userViewModelFactory()
+    }
+
+    private val userViewModel by lazy {
+        ViewModelProvider(requireActivity(), userViewModelFactory)[UserViewModel::class.java]
+    }
+
     private val vnListAdapter by lazy {
         VnListAdapter()
     }
@@ -50,6 +62,19 @@ class VnListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        binding.myToolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.action_logout -> {
+                    userViewModel.logout()
+                    true
+                }
+
+                else -> {
+                    findNavController().navigate(VnListFragmentDirections.actionVnListFragmentToUserPageFragment())
+                    true
+                }
+            }
+        }
         vnListAdapter.onVnClickListener = {
             findNavController().navigate(
                 VnListFragmentDirections.actionVnListFragmentToVnDetailsFragment(
@@ -64,6 +89,22 @@ class VnListFragment : Fragment() {
             header = header,
             footer = VnLoadStateAdapter { vnListAdapter.retry() }
         )
+
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                userViewModel.loginState.collectLatest {
+                    if (it.state == LoginState.Logged) {
+                        binding.myToolbar.title = it.user?.username
+                        binding.myToolbar.menu.findItem(R.id.action_profile).isVisible = true
+                        binding.myToolbar.menu.findItem(R.id.action_logout).isVisible = true
+                    } else {
+                        binding.myToolbar.title = "Login"
+                        binding.myToolbar.menu.findItem(R.id.action_login).isVisible = true
+                    }
+                }
+            }
+        }
+
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 viewModel.vnList.collectLatest {

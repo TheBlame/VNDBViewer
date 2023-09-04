@@ -6,11 +6,12 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.vndbviewer.data.database.dbmodels.RemoteKeys
+import com.example.vndbviewer.data.database.dbmodels.UserDbModel
 import com.example.vndbviewer.data.database.dbmodels.VnAdditionalInfoDbModel
 import com.example.vndbviewer.data.database.dbmodels.VnBasicInfoDbModel
 
 @Database(
-    entities = [VnBasicInfoDbModel::class, VnAdditionalInfoDbModel::class, RemoteKeys::class],
+    entities = [VnBasicInfoDbModel::class, VnAdditionalInfoDbModel::class, UserDbModel::class, RemoteKeys::class],
     version = 1,
     exportSchema = false
 )

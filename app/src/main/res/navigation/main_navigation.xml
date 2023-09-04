@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_vnListFragment_to_vnDetailsFragment"
             app:destination="@id/vnDetailsFragment" />
+        <action
+            android:id="@+id/action_vnListFragment_to_userPageFragment"
+            app:destination="@id/userPageFragment" />
     </fragment>
     <fragment
         android:id="@+id/vnDetailsFragment"
@@ -38,6 +41,14 @@
             android:name="selectedImagePosition"
             app:argType="integer" />
     </fragment>
+    <fragment
+        android:id="@+id/userPageFragment"
+        android:name="com.example.vndbviewer.presentation.fragments.UserPageFragment"
+        tools:layout="@layout/fragment_user_page" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.vndbviewer.presentation.fragments.LoginFragment"
+        tools:layout="@layout/fragment_login" />
 
 
 </navigation>

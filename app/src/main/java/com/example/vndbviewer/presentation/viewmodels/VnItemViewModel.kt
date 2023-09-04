@@ -30,14 +30,12 @@ class VnItemViewModel @AssistedInject constructor(
 
     init {
         viewModelScope.launch {
-            getVnDetailsUseCase.invoke(arg).collectLatest { vn ->
+            getVnDetailsUseCase(arg).collectLatest { vn ->
                 _fullTags = vn.tags.toList().sortedByDescending { it.rating }
                 val filteredVn = vn.copy(tags = filterTags())
                 _state.value = UiState(vn = filteredVn)
             }
         }
-
-        Log.d("vm", "create")
     }
 
     private fun filterTags(): List<Tags> {
@@ -66,7 +64,7 @@ class VnItemViewModel @AssistedInject constructor(
         }
         Log.d("tags", "tags number after filter ${result.size}")
         return if (state.value.spoilerQuantity == SpoilerQuantity.SPOILER_SUMMARY) {
-            result.take(40)
+            result.take(SUMMARY_QUANTITY)
         } else {
             result.toList()
         }
@@ -146,5 +144,9 @@ class VnItemViewModel @AssistedInject constructor(
     @AssistedFactory
     interface Factory {
         fun create(arg: String, savedStateHandle: SavedStateHandle): VnItemViewModel
+    }
+
+    companion object {
+        private const val SUMMARY_QUANTITY = 30
     }
 }

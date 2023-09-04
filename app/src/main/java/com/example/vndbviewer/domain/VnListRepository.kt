@@ -8,4 +8,6 @@ interface VnListRepository {
     fun getVnList(): Flow<PagingData<Vn>>
 
     fun getVnDetails(id: String): Flow<Vn>
+
+    fun getUser(token: String): Flow<User?>
 }

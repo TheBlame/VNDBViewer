@@ -7,11 +7,13 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.example.vndbviewer.data.database.AppDatabase
+import com.example.vndbviewer.data.database.dbmodels.UserDbModel
 import com.example.vndbviewer.data.database.dbmodels.VnAdditionalInfoDbModel
 import com.example.vndbviewer.data.database.dbmodels.VnBasicInfoDbModel
 import com.example.vndbviewer.data.network.api.ApiService
 import com.example.vndbviewer.data.network.pojo.VnRequest
 import com.example.vndbviewer.data.network.pojo.VnResults
+import com.example.vndbviewer.domain.User
 import com.example.vndbviewer.domain.Vn
 import com.example.vndbviewer.domain.VnListRepository
 import kotlinx.coroutines.CoroutineScope
@@ -28,8 +30,6 @@ class VnListRepositoryImpl @Inject constructor(
     private val remoteMediator: VnListRemoteMediator
 ) : VnListRepository {
 
-    private val coroutineScope = CoroutineScope(Dispatchers.Main)
-
     @OptIn(ExperimentalPagingApi::class)
     override fun getVnList(): Flow<PagingData<Vn>> {
         val pagingSourceFactory = { db.vnDao().getVnList() }
@@ -41,8 +41,6 @@ class VnListRepositoryImpl @Inject constructor(
             remoteMediator = remoteMediator,
             pagingSourceFactory = pagingSourceFactory
         ).flow
-        Log.d("Singleton test", db.toString())
-        Log.d("Singleton test", service.toString())
         return flow.map { pagingData ->
             pagingData.map { mapper.mapBasicDbModelInfoToEntity(it) }
         }
@@ -50,9 +48,12 @@ class VnListRepositoryImpl @Inject constructor(
 
     override fun getVnDetails(id: String): Flow<Vn> = flow {
         loadCertainVnInfo(id)
-        Log.d("Singleton test", db.toString())
-        Log.d("Singleton test", service.toString())
         emit(mapper.mapFullInfoToEntity(db.vnDao().getVnFullInfo(id)))
+    }
+
+    override fun getUser(token: String): Flow<User?> = flow {
+        getUserAuthInfo(token)
+        emit(mapper.mapUserDbModelToUser(db.vnDao().getCurrentUser()))
     }
 
     private suspend fun addVnList(list: List<VnBasicInfoDbModel>) {
@@ -63,25 +64,10 @@ class VnListRepositoryImpl @Inject constructor(
         db.vnDao().insertVnAdditionalInfo(vn)
     }
 
-    private suspend fun loadVnList() {
-        try {
-            val result: List<VnResults> =
-                service.postToVnEndpoint(
-                    VnRequest(
-                        page = 1,
-                        results = 100,
-                        reverse = true,
-                        sort = "rating",
-                        fields = "title, image.url, rating, votecount"
-                    )
-                ).vnListResults
-            addVnList(mapper.mapListVnResponseToListBasicDbModelInfo(result))
-        } catch (e: Exception) {
-            e.message?.let { Log.e("loadVnList", it) }
-        }
+    private suspend fun updateUser(user: UserDbModel) {
+        db.vnDao().updateCurrentUser(user)
     }
 
-    //withContext() { }
     private suspend fun loadCertainVnInfo(id: String) {
         try {
             val result: List<VnResults> =
@@ -91,10 +77,20 @@ class VnListRepositoryImpl @Inject constructor(
                         fields = "title, image.url, rating, votecount, description, tags.rating, tags.spoiler, tags.name, tags.category, screenshots.thumbnail, screenshots.release.title, screenshots.sexual"
                     )
                 ).vnListResults
-            Log.d("vnresults", "${result.first()}")
             updateVnDetails(mapper.mapVnResponseToAdditionalDbModelInfo(result.first()))
         } catch (e: Exception) {
             e.message?.let { Log.e("loadCertainVnInfo", it) }
+        }
+    }
+
+    private suspend fun getUserAuthInfo(token: String) {
+        try {
+            val result =
+                service.getUserInfo("token $token")
+            updateUser(mapper.mapAuthInfoToUserDbModel(result))
+        } catch (e: Exception) {
+            e.message?.let { Log.e("getUser", it) }
+            db.vnDao().removeCurrentUser()
         }
     }
 }

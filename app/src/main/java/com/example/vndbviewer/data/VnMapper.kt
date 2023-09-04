@@ -1,10 +1,13 @@
 package com.example.vndbviewer.data
 
+import com.example.vndbviewer.data.database.dbmodels.UserDbModel
 import com.example.vndbviewer.data.database.dbmodels.VnAdditionalInfoDbModel
 import com.example.vndbviewer.data.database.dbmodels.VnBasicInfoDbModel
-import com.example.vndbviewer.data.database.dbmodels.VnFullInfo
+import com.example.vndbviewer.data.database.dbmodels.VnFullInfoDbModel
+import com.example.vndbviewer.data.network.pojo.Authinfo
 import com.example.vndbviewer.data.network.pojo.VnResults
 import com.example.vndbviewer.domain.ScreenshotList
+import com.example.vndbviewer.domain.User
 import com.example.vndbviewer.domain.Vn
 import javax.inject.Inject
 
@@ -21,7 +24,7 @@ class VnMapper @Inject constructor() {
         screenshots = listOf()
     )
 
-    fun mapFullInfoToEntity(fullInfo: VnFullInfo) = Vn(
+    fun mapFullInfoToEntity(fullInfo: VnFullInfoDbModel) = Vn(
         id = fullInfo.vnBasicInfoDbModel.id,
         image = fullInfo.vnBasicInfoDbModel.image,
         rating = fullInfo.vnBasicInfoDbModel.rating,
@@ -40,12 +43,22 @@ class VnMapper @Inject constructor() {
         title = vn.title
     )
 
-    fun mapFullInfoToBasicDbModelInfo(fullInfo: VnFullInfo) = VnBasicInfoDbModel(
+    fun mapFullInfoToBasicDbModelInfo(fullInfo: VnFullInfoDbModel) = VnBasicInfoDbModel(
         id = fullInfo.vnBasicInfoDbModel.id,
         image = fullInfo.vnBasicInfoDbModel.image,
         rating = fullInfo.vnBasicInfoDbModel.rating,
         votecount = fullInfo.vnBasicInfoDbModel.votecount,
         title = fullInfo.vnBasicInfoDbModel.title
+    )
+
+    fun mapAuthInfoToUserDbModel(authinfo: Authinfo) = UserDbModel(
+        id = authinfo.id,
+        username = authinfo.username
+    )
+
+    fun mapUserDbModelToUser(userDbModel: UserDbModel?) = if (userDbModel == null) null else User(
+        id = userDbModel.id,
+        username = userDbModel.username
     )
 
 //    fun mapFullInfoToAdditionalDbModelInfo(fullInfo: VnFullInfo) = fullInfo.vnAdditionalInfoDbModel?.description?.let {
@@ -55,7 +68,7 @@ class VnMapper @Inject constructor() {
 //    )
 //    }
 
-    fun mapListFullInfoToListBasicDbModelInfo(list: List<VnFullInfo>) = list.map {
+    fun mapListFullInfoToListBasicDbModelInfo(list: List<VnFullInfoDbModel>) = list.map {
         mapFullInfoToBasicDbModelInfo(it)
     }
 
