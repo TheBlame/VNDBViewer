@@ -28,6 +28,7 @@ class VnListAdapter :
     }
 
     override fun onBindViewHolder(holder: VnItemViewHolder, position: Int) {
+
         val vn = getItem(position)
         holder.binding.tittle.text = vn?.title
         holder.binding.rating.text = vn?.rating.toString()

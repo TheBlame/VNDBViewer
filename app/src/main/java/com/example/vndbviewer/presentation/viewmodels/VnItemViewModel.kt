@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.vndbviewer.data.network.pojo.Tags
+import com.example.vndbviewer.data.network.pojo.vn.Tags
 import com.example.vndbviewer.domain.Vn
 import com.example.vndbviewer.domain.usecases.GetVnDetailsUseCase
 import dagger.assisted.Assisted

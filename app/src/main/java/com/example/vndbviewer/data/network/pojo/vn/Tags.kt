@@ -1,4 +1,4 @@
-package com.example.vndbviewer.data.network.pojo
+package com.example.vndbviewer.data.network.pojo.vn
 
 data class Tags(
     val rating: Double,

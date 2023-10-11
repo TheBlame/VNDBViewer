@@ -5,7 +5,7 @@ import com.example.vndbviewer.data.database.dbmodels.VnAdditionalInfoDbModel
 import com.example.vndbviewer.data.database.dbmodels.VnBasicInfoDbModel
 import com.example.vndbviewer.data.database.dbmodels.VnFullInfoDbModel
 import com.example.vndbviewer.data.network.pojo.Authinfo
-import com.example.vndbviewer.data.network.pojo.VnResults
+import com.example.vndbviewer.data.network.pojo.vn.VnResults
 import com.example.vndbviewer.domain.ScreenshotList
 import com.example.vndbviewer.domain.User
 import com.example.vndbviewer.domain.Vn

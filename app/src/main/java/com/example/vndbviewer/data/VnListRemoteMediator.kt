@@ -9,7 +9,7 @@ import com.example.vndbviewer.data.database.AppDatabase
 import com.example.vndbviewer.data.database.dbmodels.RemoteKeys
 import com.example.vndbviewer.data.database.dbmodels.VnBasicInfoDbModel
 import com.example.vndbviewer.data.network.api.ApiService
-import com.example.vndbviewer.data.network.pojo.VnRequest
+import com.example.vndbviewer.data.network.pojo.vn.VnRequest
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject

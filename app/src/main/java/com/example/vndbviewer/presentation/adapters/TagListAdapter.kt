@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.vndbviewer.data.network.pojo.Tags
+import com.example.vndbviewer.data.network.pojo.vn.Tags
 import com.example.vndbviewer.databinding.ItemTagBinding
 import java.math.RoundingMode
 import java.text.DecimalFormat

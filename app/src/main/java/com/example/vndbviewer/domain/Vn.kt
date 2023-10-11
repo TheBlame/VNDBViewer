@@ -1,6 +1,6 @@
 package com.example.vndbviewer.domain
 
-import com.example.vndbviewer.data.network.pojo.Tags
+import com.example.vndbviewer.data.network.pojo.vn.Tags
 
 data class Vn(
     val id: String = "",

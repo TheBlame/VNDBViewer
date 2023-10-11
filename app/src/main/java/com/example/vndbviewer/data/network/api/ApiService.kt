@@ -1,8 +1,8 @@
 package com.example.vndbviewer.data.network.api
 
 import com.example.vndbviewer.data.network.pojo.Authinfo
-import com.example.vndbviewer.data.network.pojo.VnRequest
-import com.example.vndbviewer.data.network.pojo.VnResponse
+import com.example.vndbviewer.data.network.pojo.vn.VnRequest
+import com.example.vndbviewer.data.network.pojo.vn.VnResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

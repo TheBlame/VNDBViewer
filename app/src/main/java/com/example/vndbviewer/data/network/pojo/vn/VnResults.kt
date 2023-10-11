@@ -1,4 +1,6 @@
-package com.example.vndbviewer.data.network.pojo
+package com.example.vndbviewer.data.network.pojo.vn
+
+import com.example.vndbviewer.data.network.pojo.Image
 
 data class VnResults(
     val id: String,

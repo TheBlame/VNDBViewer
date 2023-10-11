@@ -11,13 +11,11 @@ import com.example.vndbviewer.data.database.dbmodels.UserDbModel
 import com.example.vndbviewer.data.database.dbmodels.VnAdditionalInfoDbModel
 import com.example.vndbviewer.data.database.dbmodels.VnBasicInfoDbModel
 import com.example.vndbviewer.data.network.api.ApiService
-import com.example.vndbviewer.data.network.pojo.VnRequest
-import com.example.vndbviewer.data.network.pojo.VnResults
+import com.example.vndbviewer.data.network.pojo.vn.VnRequest
+import com.example.vndbviewer.data.network.pojo.vn.VnResults
 import com.example.vndbviewer.domain.User
 import com.example.vndbviewer.domain.Vn
 import com.example.vndbviewer.domain.VnListRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
